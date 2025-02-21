@@ -54,7 +54,7 @@ const CurrentUser = () => {
             >
                 <CustomAvatar
                     name={nombreUsuario}
-                    src={"src/images/uta.png"}
+                    src={"src/images/user.png"}
                     size="default"
                     style={{ cursor: 'pointer' }}
                 />

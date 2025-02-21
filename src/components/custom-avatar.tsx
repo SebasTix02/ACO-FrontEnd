@@ -10,8 +10,9 @@ function CustomAvatar({name, style, ...rest}: Props) {
     <AntdAvatar
     alt={'Usuario'}
     size="small"
+    shape='square'
     style={{ 
-        backgroundColor: "#fff",
+        backgroundColor: "#4C8EFE",
         display: "flex",
         alignItems: 'center',
         border: 'none',

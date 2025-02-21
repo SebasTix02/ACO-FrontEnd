@@ -30,13 +30,35 @@
 }
 
 .login-card {
-  background-color: #1F2421;
+  background-color: #1F4083;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 27rem;
   margin: 0 auto;
+  position: relative;
 }
+
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("src/images/logo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  opacity: 0.3; 
+  z-index: 0;
+}
+
+.login-card * {
+  position: relative;
+  z-index: 1;
+}
+
 
 /* Responsive adjustments for login-card */
 @media (max-width: 768px) {
@@ -62,10 +84,18 @@
   text-align: left;
 }
 
+.login-vincere {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #50DFED;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-style: italic;
+}
 .login-description {
   font-size: 0.8rem;
   font-family: Arial, Helvetica, sans-serif;
-  color: rgba(255, 255, 255, 0.59);
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 2rem;
   text-align: left;
 }
@@ -74,6 +104,14 @@
   .login-title,
   .login-description {
     font-size: 1rem; /* Adjust font size for smaller screens */
+  }
+  .login-vincere {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #50DFED;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-style: italic;
   }
 }
 
@@ -103,8 +141,8 @@
 .login-button {
   width: 100%;
   height: max-content;
-  background-color: #9A031E;
-  border-color: rgb(75, 0, 0);
+  background-color: #46ACD1;
+  border-color: #289cc6;
   color: #ffffff;
   padding: 0.8rem;
   font-size: 1rem;
@@ -116,7 +154,7 @@
 }
 
 .login-button:hover {
-  background-color: #420000 !important;
+  background-color: #0984b1 !important;
   color: #ffffff !important;
 }
 

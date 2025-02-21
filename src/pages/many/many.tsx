@@ -1,11 +1,11 @@
 import { Row, Button, Space } from "antd";
 import Layout from "../../components/layout";
 import { useState,  } from "react";
-import {  UnorderedListOutlined, DatabaseOutlined, AppstoreOutlined, CopyrightOutlined, UngroupOutlined } from '@ant-design/icons';
+import {  FileAddOutlined, CarOutlined, OrderedListOutlined} from '@ant-design/icons';
 import "../options.css"
 import { useNavigate } from "react-router-dom";
 
-export const Many = () => {
+export const Pedidos = () => {
     const navigate = useNavigate()
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -15,29 +15,21 @@ export const Many = () => {
     return (
         <Layout>
             <div style={{ padding: '20px' }}>
-                <h1 style={{ marginBottom: '20px' }}>Varios</h1>
+                <h1 style={{ marginBottom: '20px' }}>Menú de Pedidos</h1>
                 <Row gutter={[16, 16]} justify={"center"}>
                     <Space>
                         <div className="listI">
-                            <Button type="primary" icon={ <UnorderedListOutlined />} 
+                            <Button type="primary" icon={ <FileAddOutlined />} 
                                 className="custom-buttonI" onClick={() => navigate("/categorias")}>
-                                Categorías
+                                Ingresar Pedido
                             </Button>
-                            <Button type="primary" icon={ <DatabaseOutlined />} 
+                            <Button type="primary" icon={ <CarOutlined />} 
                                 className="custom-buttonI" onClick={() => navigate("/bloques")}>
-                                Bloques
+                                Rutas
                             </Button>
-                            <Button type="primary" icon={ <AppstoreOutlined />} 
+                            <Button type="primary" icon={ <OrderedListOutlined />} 
                                 className="custom-buttonI" onClick={() => navigate("/ubicaciones")}>
-                                Ubicación
-                            </Button>
-                            <Button type="primary" icon={ <CopyrightOutlined />} 
-                                className="custom-buttonI" onClick={() => navigate("/marcas")}>
-                                Marcas
-                            </Button>
-                            <Button type="primary" icon={ <UngroupOutlined />} 
-                                className="custom-buttonI" onClick={() => navigate("/dependencias")}>
-                                Dependencias
+                                Ver Pedidos
                             </Button>
                         </div>
                     </Space>
