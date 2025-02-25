@@ -1,0 +1,96 @@
+/* Estilos generales */
+.orders-table-container {
+    overflow: hidden;
+    padding: 15px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Controles de filtro */
+  .filter-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .province-select, .date-picker {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .filter-button {
+    white-space: nowrap;
+  }
+  
+  /* Tags de filtros */
+  .filter-tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  
+  .filter-tag {
+    background: #f0f2f5;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  
+  /* Tabla responsive */
+  .responsive-table {
+    min-width: 1000px;
+    overflow-x: auto;
+  }
+  
+  /* Detalles expandidos */
+  .expanded-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  /* Media queries */
+  @media (max-width: 768px) {
+    .filter-controls {
+      flex-direction: column;
+      gap: 8px !important;
+    }
+    
+    .province-select, .date-picker {
+      min-width: 100% !important;
+      width: 100% !important;
+    }
+    
+    .ant-picker-range {
+      width: 100% !important;
+    }
+    
+    .filter-button {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .responsive-table {
+      min-width: 600px;
+      font-size: 12px;
+    }
+    
+    .expanded-content {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .responsive-table {
+      min-width: 300px;
+    }
+    
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td {
+      padding: 8px !important;
+    }
+  }

@@ -1,158 +1,279 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Select, Tag, Checkbox, Alert } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import message from 'antd/lib/message';
+import {Table,Button,Tag,Select,DatePicker,Space,Checkbox,message} from 'antd';
+import {SearchOutlined,CloseOutlined} from '@ant-design/icons';
+import type { RangePickerProps } from 'antd/es/date-picker';
+import './tabla_pedidos.css';
 
-interface Product {
-  id: string;
-  name: string;
-  quantity: number;
-}
+const { RangePicker } = DatePicker;
 
 interface Order {
-  key: string;
-  orderNumber: string;
-  customer: string;
-  province: string;
-  products: Product[];
-  total: number;
-  deliveryDate: string;
+    key: string;
+    orderNumber: string;
+    customer: string;
+    lat: number;
+    lon: number;
+    products: Product[];
+    total: number;
+    deliveryDate: string;
 }
 
-const OrdersTable: React.FC = () => {
-  // Datos de ejemplo
-  const [orders, setOrders] = useState<Order[]>([
-    {
-      key: '1',
-      orderNumber: 'ORD-001',
-      customer: 'Tienda Don Juan',
-      province: 'Pichincha',
-      products: [
-        { id: '1', name: 'Arroz', quantity: 50 },
-        { id: '2', name: 'Aceite', quantity: 30 }
-      ],
-      total: 1200,
-      deliveryDate: '2024-03-15'
+interface Product {
+    id: string;
+    name: string;
+    quantity: number;
+}
+
+interface Filter {
+    type: 'province' | 'dateRange';
+    value: string | string[];
+}
+
+const ecuadorProvinces = [
+    { 
+      name: 'Pichincha', 
+      bounds: {
+        minLat: -0.5116, maxLat: 0.0987,
+        minLon: -78.9064, maxLon: -78.1834
+      }
     },
     {
-      key: '2',
-      orderNumber: 'ORD-002',
-      customer: 'Supermercado La Esquina',
-      province: 'Guayas',
-      products: [
-        { id: '1', name: 'Arroz', quantity: 40 },
-        { id: '3', name: 'Azúcar', quantity: 25 }
-      ],
-      total: 980,
-      deliveryDate: '2024-03-16'
-    }
-  ]);
-
-  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
-  const [productSummary, setProductSummary] = useState<{[key: string]: number}>({});
-  const [filters, setFilters] = useState<any[]>([]);
-
-  // Columnas de la tabla
-  const columns = [
-    {
-      title: 'Selección',
-      dataIndex: 'key',
-      render: (key: string) => (
-        <Checkbox 
-          checked={selectedOrders.includes(key)}
-          onChange={(e) => handleSelectOrder(key, e.target.checked)}
-        />
-      )
+      name: 'Guayas',
+      bounds: {
+        minLat: -2.4549, maxLat: -1.5166,
+        minLon: -80.3667, maxLon: -79.2333
+      }
     },
-    { title: 'N° Orden', dataIndex: 'orderNumber' },
-    { title: 'Cliente', dataIndex: 'customer' },
-    { title: 'Provincia', dataIndex: 'province' },
-    { title: 'Total', dataIndex: 'total', render: (value: number) => `$${value.toFixed(2)}` },
-    { title: 'Fecha Entrega', dataIndex: 'deliveryDate' }
-  ];
+    {
+      name: 'Azuay',
+      bounds: {
+        minLat: -3.3667, maxLat: -2.4667,
+        minLon: -79.5000, maxLon: -78.5000
+      }
+    }];
 
-  // Manejar selección de pedidos
-  const handleSelectOrder = (orderKey: string, checked: boolean) => {
-    setSelectedOrders(prev => 
-      checked ? [...prev, orderKey] : prev.filter(key => key !== orderKey)
+const getProvinceFromCoords = (lat: number, lon: number): string => {
+    const province = ecuadorProvinces.find(p =>
+        lat >= p.bounds.minLat && lat <= p.bounds.maxLat &&
+        lon >= p.bounds.minLon && lon <= p.bounds.maxLon
     );
-  };
+    return province?.name || 'Desconocida';
+};
 
-  // Calcular resumen de productos
-  useEffect(() => {
-    const summary: {[key: string]: number} = {};
-    
-    orders
-      .filter(order => selectedOrders.includes(order.key))
-      .forEach(order => {
-        order.products.forEach(product => {
-          summary[product.name] = (summary[product.name] || 0) + product.quantity;
+const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
+    const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+    const [productSummary, setProductSummary] = useState<{ [key: string]: number }>({});
+    const [filters, setFilters] = useState<Filter[]>([]);
+    const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
+    const [dateRange, setDateRange] = useState<string[]>([]);
+
+    const handleDateChange: RangePickerProps['onChange'] = (_, dateStrings) => {
+        setDateRange(dateStrings);
+    };
+
+    const handleSearch = () => {
+        return orders.filter(order => {
+            const provinceMatch = selectedProvinces.length === 0 ||
+                selectedProvinces.includes(getProvinceFromCoords(order.lat, order.lon));
+
+            const dateMatch = dateRange.length !== 2 || (
+                order.deliveryDate >= dateRange[0] &&
+                order.deliveryDate <= dateRange[1]
+            );
+
+            return provinceMatch && dateMatch;
         });
-      });
+    };
 
-    setProductSummary(summary);
-  }, [selectedOrders, orders]);
+    const addFilter = () => {
+        const newFilters: Filter[] = [];
 
-  // Generar resumen de productos
-  const renderProductSummary = () => (
-    <div style={{ margin: '20px 0' }}>
-      <h3>Resumen de Productos Seleccionados:</h3>
-      {Object.entries(productSummary).map(([product, quantity]) => (
-        <Tag color="blue" key={product}>
-          {product}: {quantity} unidades
-        </Tag>
-      ))}
-    </div>
-  );
+        if (selectedProvinces.length > 0) {
+            newFilters.push({
+                type: 'province',
+                value: selectedProvinces.join(', ')
+            });
+        }
 
-  // Generar ruta óptima
-  const handleGenerateRoute = () => {
-    if (selectedOrders.length === 0) {
-      message.error('Seleccione al menos un pedido para generar la ruta');
-      return;
-    }
-    
-    message.success('Ruta óptima generada con éxito!', 3);
-  };
+        if (dateRange.length === 2) {
+            newFilters.push({
+                type: 'dateRange',
+                value: dateRange
+            });
+        }
 
-  return (
-    <div>
-      <div style={{ marginBottom: 16 }}>
-        <Button 
-          type="primary" 
-          onClick={handleGenerateRoute}
-          icon={<SearchOutlined />}
-        >
-          Generar Ruta Óptima
-        </Button>
-      </div>
+        setFilters(prev => [...prev, ...newFilters]);
+    };
 
-      {renderProductSummary()}
+    const removeFilter = (index: number) => {
+        setFilters(prev => prev.filter((_, i) => i !== index));
+    };
 
-      <Table
-        dataSource={orders}
-        columns={columns}
-        pagination={{ pageSize: 6 }}
-        rowKey="key"
-        rowSelection={{
-          selectedRowKeys: selectedOrders,
-          onChange: (selectedKeys) => setSelectedOrders(selectedKeys as string[]),
-        }}
-        expandable={{
-          expandedRowRender: (record: Order) => (
-            <div style={{ margin: 10 }}>
-              <h4>Productos:</h4>
-              {record.products.map(product => (
-                <Tag key={product.id} color="geekblue">
-                  {product.name} ({product.quantity} unidades)
-                </Tag>
-              ))}
-            </div>
+    const clearFilters = () => {
+        setSelectedProvinces([]);
+        setDateRange([]);
+        setFilters([]);
+    };
+
+    useEffect(() => {
+        const newSummary = orders
+          .filter(order => selectedOrders.includes(order.key))
+          .flatMap(order => order.products)
+          .reduce((acc: {[key: string]: number}, product) => {
+            acc[product.name] = (acc[product.name] || 0) + product.quantity;
+            return acc;
+          }, {});
+      
+        setProductSummary(newSummary);
+      }, [selectedOrders, orders]);
+    const handleSelectOrder = (orderKey: string, checked: boolean) => {
+        console.log(checked)
+        setSelectedOrders(prev =>
+            checked ? [...prev, orderKey] : prev.filter(key => key !== orderKey)
+        );
+    };
+    const rowSelection = {
+        selectedRowKeys: selectedOrders,
+        onChange: (selectedKeys: React.Key[]) => {
+          setSelectedOrders(selectedKeys as string[]);
+        }
+      };
+    const handleGenerateRoute = () => {
+        if (selectedOrders.length === 0) {
+            message.error('Seleccione al menos un pedido para generar la ruta');
+            return;
+        }
+
+        message.success('Ruta óptima generada con éxito!', 3);
+    };
+    // Generar resumen de productos
+    const renderProductSummary = () => (
+        <div style={{ margin: '20px 0' }}>
+          <h3>Resumen de Productos Seleccionados:</h3>
+          {Object.entries(productSummary).length > 0 ? (
+            Object.entries(productSummary).map(([product, quantity]) => (
+              <Tag color="blue" key={product}>
+                {product}: {quantity} unidades
+              </Tag>
+            ))
+          ) : (
+            <Tag color="gray">No hay productos seleccionados</Tag>
+          )}
+        </div>
+      );
+      const columns = [
+        { title: 'N° Orden', dataIndex: 'orderNumber' },
+        { title: 'Cliente', dataIndex: 'customer' },
+        { 
+          title: 'Provincia', 
+          key: 'province',
+          render: (_: any, record: Order) => (
+            <Tag color="geekblue">
+              {getProvinceFromCoords(record.lat, record.lon)}
+            </Tag>
           )
-        }}
-      />
-    </div>
-  );
+        },
+        { title: 'Total', dataIndex: 'total', render: (value: number) => `$${value.toFixed(2)}` },
+        { title: 'Fecha Entrega', dataIndex: 'deliveryDate' }
+      ];
+    return (
+        <div className="orders-table-container">
+            <div style={{ marginBottom: 16 }}>
+                <Button
+                    type="primary"
+                    onClick={handleGenerateRoute}
+                    icon={<SearchOutlined />}
+                >
+                    Generar Ruta Óptima
+                </Button>
+            </div>
+
+            {renderProductSummary()}
+            <div className="filter-controls">
+                <Select
+                    mode="multiple"
+                    placeholder="Provincias"
+                    className="province-select"
+                    value={selectedProvinces}
+                    onChange={setSelectedProvinces}
+                    options={ecuadorProvinces.map(p => ({
+                        value: p.name,
+                        label: p.name
+                    }))}
+                />
+
+                <RangePicker
+                    className="date-picker"
+                    placeholder={['Inicio', 'Fin']}
+                    format="YYYY-MM-DD"
+                    onChange={handleDateChange}
+                />
+
+                <Space>
+                    <Button
+                        type="primary"
+                        icon={<SearchOutlined />}
+                        onClick={addFilter}
+                        className="filter-button"
+                    >
+                        Filtrar
+                    </Button>
+                    <Button
+                        onClick={clearFilters}
+                        icon={<CloseOutlined />}
+                        className="filter-button"
+                    >
+                        Limpiar
+                    </Button>
+                </Space>
+            </div>
+
+            <div className="filter-tag-container">
+                {filters.map((filter, index) => (
+                    <Tag
+                        key={index}
+                        closable
+                        onClose={() => removeFilter(index)}
+                        className="filter-tag"
+                    >
+                        {filter.type === 'province'
+                            ? `Provincia: ${filter.value}`
+                            : `Fecha: ${(filter.value as string[]).join(' -> ')}`}
+                    </Tag>
+                ))}
+            </div>
+
+            <Table
+                className="responsive-table"
+                dataSource={handleSearch()}
+                columns={columns}
+                rowSelection={rowSelection}
+
+                pagination={{ pageSize: 6 }}
+                scroll={{ x: 800 }}
+                expandable={{
+                    expandedRowRender: (record: Order) => (
+                        <div className="expanded-content">
+                            <div>
+                                <h4>Ubicación</h4>
+                                <p>Lat: {record.lat.toFixed(4)}</p>
+                                <p>Lon: {record.lon.toFixed(4)}</p>
+                            </div>
+                            <div>
+                                <h4>Productos</h4>
+                                {record.products.map(product => (
+                                    <div key={product.id}>
+                                        <Tag color="geekblue">
+                                            {product.name} ({product.quantity}u)
+                                        </Tag>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }}
+            />
+        </div>
+    );
 };
 
 export default OrdersTable;

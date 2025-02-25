@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../components/layout';
 import { Button, Row } from 'antd';
-import OrdersTable from '../../common/table/tabla_pedidos'; // Asegúrate de tener esta ruta correcta
-
+import OrdersTable from '../../common/table/tabla_pedidos';
+import "../../common/table/tabla_pedidos.css";
 const Rutas = () => {
-  // Datos inventados para las órdenes
   const sampleOrders = [
     {
       key: '1',
       orderNumber: 'ORD-001',
-      customer: 'Distribuidora La Favorita',
-      province: 'Pichincha',
+      customer: 'Distribuidora Quito',
+      lat: -0.1807,  // Coordenadas de Quito
+      lon: -78.4678,
       products: [
         { id: '1', name: 'Arroz', quantity: 100 },
         { id: '2', name: 'Aceite', quantity: 50 }
@@ -22,10 +22,11 @@ const Rutas = () => {
     {
       key: '2',
       orderNumber: 'ORD-002',
-      customer: 'Supermercado Santa María',
-      province: 'Guayas',
+      customer: 'Supermercado Guayaquil',
+      lat: -2.1709,  // Coordenadas de Guayaquil
+      lon: -79.9223,
       products: [
-        { id: '3', name: 'Azúcar', quantity: 80 },
+        { id: '3', name: 'Arroz', quantity: 80 },
         { id: '4', name: 'Sal', quantity: 120 }
       ],
       total: 1800,
@@ -34,8 +35,9 @@ const Rutas = () => {
     {
       key: '3',
       orderNumber: 'ORD-003',
-      customer: 'Tienda Don Carlos',
-      province: 'Azuay',
+      customer: 'Tienda Cuenca',
+      lat: -2.9005,  // Coordenadas de Cuenca
+      lon: -79.0045,
       products: [
         { id: '5', name: 'Harina', quantity: 60 },
         { id: '6', name: 'Leche', quantity: 90 }
@@ -45,17 +47,20 @@ const Rutas = () => {
     }
   ];
 
-  const [orders, setOrders] = useState(sampleOrders);
+  const [orders] = useState(sampleOrders);
 
   return (
     <Layout>
-      <div style={{ padding: '20px' }}>
-        <h1 style={{ marginBottom: '20px' }}>Gestión de Rutas de Entrega</h1>
-        <Row gutter={[16, 16]}>
-          <div style={{ width: '100%' }}>
-            <OrdersTable />
-          </div>
-        </Row>
+      <div style={{ 
+        padding: '20px',
+        height: 'calc(100vh - 64px)',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <h1 style={{ margin: '0 0 20px 0' }}>Gestión de Rutas</h1>
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <OrdersTable orders={sampleOrders} />
+        </div>
       </div>
     </Layout>
   );
