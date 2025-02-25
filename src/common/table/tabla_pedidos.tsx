@@ -234,11 +234,6 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     expandedRowRender: (record: Order) => (
                         <div className="expanded-content">
                             <div>
-                                <h4>Ubicación</h4>
-                                <p>Lat: {record.lat.toFixed(4)}</p>
-                                <p>Lon: {record.lon.toFixed(4)}</p>
-                            </div>
-                            <div>
                                 <h4>Productos</h4>
                                 {record.products.map(product => (
                                     <div key={product.id}>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../components/layout';
-import { Button, Row } from 'antd';
+import { Button } from 'antd';
 import OrdersTable from '../../common/table/tabla_pedidos';
-import "../../common/table/tabla_pedidos.css";
+import './rutas.css';
+
 const Rutas = () => {
+  const [showRoutesView, setShowRoutesView] = useState(false);
   const sampleOrders = [
     {
       key: '1',
@@ -47,20 +49,40 @@ const Rutas = () => {
     }
   ];
 
-  const [orders] = useState(sampleOrders);
-
   return (
     <Layout>
-      <div style={{ 
-        padding: '20px',
-        height: 'calc(100vh - 64px)',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        <h1 style={{ margin: '0 0 20px 0' }}>Gestión de Rutas</h1>
-        <div style={{ flex: 1, overflow: 'hidden' }}>
-          <OrdersTable orders={sampleOrders} />
-        </div>
+      <div className="routes-container">
+        <header className="routes-header">
+          <h1 className="routes-title">Gestión de Rutas</h1>
+          <div className="routes-buttons">
+            <Button
+              type={!showRoutesView ? "primary" : "default"}
+              onClick={() => setShowRoutesView(false)}
+              className="route-button"
+            >
+              Generar Rutas
+            </Button>
+            <Button
+              type={showRoutesView ? "primary" : "default"}
+              onClick={() => setShowRoutesView(true)}
+              className="route-button"
+            >
+              Visualizar Rutas
+            </Button>
+          </div>
+        </header>
+
+        <main className="routes-content">
+          {!showRoutesView ? (
+            <div className="table-container">
+              <OrdersTable orders={sampleOrders} />
+            </div>
+          ) : (
+            <div className="routes-visualization">
+              <h1 className="visualization-title">Rutas Optimizadas</h1>
+            </div>
+          )}
+        </main>
       </div>
     </Layout>
   );

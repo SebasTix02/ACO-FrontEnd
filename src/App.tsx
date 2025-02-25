@@ -19,7 +19,7 @@ import Layout from "./components/layout";
 import { resources } from "./config/resources";
 import { Categorias } from "./pages/category/category";
 import { Etiquetas } from "./pages/labels/labels";
-import { Pedidos } from "./pages/many/many";
+import { Pedidos } from "./pages/pedidos/pedidos";
 import Rutas from "./pages/rutas/rutas";
 import { Locations } from "./pages/location/location";
 import { Brands } from "./pages/brand/brand";
