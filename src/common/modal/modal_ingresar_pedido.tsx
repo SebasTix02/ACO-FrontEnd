@@ -6,7 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider, SearchControl } from 'leaflet-
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
-
+import {Product, PedidoEntradaModalProps} from '../../interfaces/interfaces';
 // Fix Leaflet default icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -15,18 +15,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-interface Product {
-  key: string;
-  name: string;
-  quantity: number;
-  price: number;
-  total: number;
-}
-
-interface OrderEntryModalProps {
-  isVisible: boolean;
-  onClose: () => void;
-}
 
 const customers = [
   { value: 'CF', label: 'Consumidor Final' },
@@ -89,7 +77,7 @@ const MapComponent: React.FC<{
     return null;
   };
 
-const OrderEntryModal: React.FC<OrderEntryModalProps> = ({ isVisible, onClose }) => {
+const OrderEntryModal: React.FC<PedidoEntradaModalProps> = ({ isVisible, onClose }) => {
   const [form] = Form.useForm();
   const [selectedCustomer, setSelectedCustomer] = useState<string>();
   const [productList, setProductList] = useState<Product[]>([]);

@@ -3,30 +3,10 @@ import {Table,Button,Tag,Select,DatePicker,Space,Checkbox,message} from 'antd';
 import {SearchOutlined,CloseOutlined} from '@ant-design/icons';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import './tabla_pedidos.css';
+import { Filter, Order } from '../../interfaces/interfaces';
 
 const { RangePicker } = DatePicker;
 
-interface Order {
-    key: string;
-    orderNumber: string;
-    customer: string;
-    lat: number;
-    lon: number;
-    products: Product[];
-    total: number;
-    deliveryDate: string;
-}
-
-interface Product {
-    id: string;
-    name: string;
-    quantity: number;
-}
-
-interface Filter {
-    type: 'province' | 'dateRange';
-    value: string | string[];
-}
 
 const ecuadorProvinces = [
     { 
