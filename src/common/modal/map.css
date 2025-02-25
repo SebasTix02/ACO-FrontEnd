@@ -67,19 +67,4 @@
     justify-content: flex-end; /* Alineación derecha en desktop */
   }
 }
-.leaflet-control-geocoder-form {
-  width: 250px;
-  padding: 5px;
-}
 
-.leaflet-control-geocoder-form input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.leaflet-control-geocoder-icon {
-  background-image: url('https://cdn-icons-png.flaticon.com/512/484/484167.png') !important;
-  background-size: 20px;
-}

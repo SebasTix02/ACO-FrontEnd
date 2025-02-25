@@ -20,7 +20,7 @@ import { resources } from "./config/resources";
 import { Categorias } from "./pages/category/category";
 import { Etiquetas } from "./pages/labels/labels";
 import { Pedidos } from "./pages/many/many";
-import { Buildings } from "./pages/building/building";
+import Rutas from "./pages/rutas/rutas";
 import { Locations } from "./pages/location/location";
 import { Brands } from "./pages/brand/brand";
 import { Dependency } from "./pages/dependency/dependency";
@@ -64,7 +64,7 @@ function App() {
                   <Route path="/pedidos" element={<Pedidos />} />
                   <Route path="/categorias" element={<Categorias />} />
                   <Route path="/etiquetas" element={<Etiquetas />} />
-                  <Route path="/bloques" element={<Buildings />} />
+                  <Route path="/rutas" element={<Rutas />} />
                   <Route path="/ubicaciones" element={<Locations />} />
                   <Route path="/marcas" element={<Brands />} />
                   <Route path="/dependencias" element={<Dependency />} />

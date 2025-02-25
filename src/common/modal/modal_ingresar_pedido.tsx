@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Select, Input, Button, Table, Form, InputNumber, message } from 'antd';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import { LatLng, Icon } from 'leaflet';
+import { GeoSearchControl, OpenStreetMapProvider, SearchControl } from 'leaflet-geosearch';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-geosearch/dist/geosearch.css';
 
 // Fix Leaflet default icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -39,15 +41,52 @@ const products = [
   { value: '3', label: 'Producto 3', price: 300 },
 ];
 
-const MapComponent: React.FC<{ onPositionChange: (pos: LatLng) => void }> = ({ onPositionChange }) => {
-  const map = useMapEvents({
-    click(e) {
-      onPositionChange(e.latlng);
-    },
-  });
-
-  return null;
-};
+const MapComponent: React.FC<{ 
+    onPositionChange: (pos: LatLng) => void
+  }> = ({ onPositionChange }) => {
+    const map = useMap();
+    const [provider] = useState(new OpenStreetMapProvider());
+  
+    useEffect(() => {
+      if (!map) return;
+  
+      // Configurar el buscador
+      
+      const searchControl = new (GeoSearchControl as any)({
+        provider,
+        position: 'topright',
+        style: 'bar',
+        showMarker: true,
+        retainZoomLevel: false,
+        animateZoom: true,
+        autoClose: true,
+        searchLabel: 'Buscar dirección en Ecuador',
+        keepResult: true,
+        updateMap: true,
+      });
+  
+      map.addControl(searchControl);
+  
+      // Manejar resultados de búsqueda
+      map.on('geosearch/showlocation', (e: any) => {
+        const newPos = new L.LatLng(e.location.y, e.location.x);
+        onPositionChange(newPos);
+      });
+  
+      return () => {
+        map.removeControl(searchControl);
+      };
+    }, [map]);
+  
+    // Mantener el marcador por click
+    useMapEvents({
+      click(e) {
+        onPositionChange(e.latlng);
+      },
+    });
+  
+    return null;
+  };
 
 const OrderEntryModal: React.FC<OrderEntryModalProps> = ({ isVisible, onClose }) => {
   const [form] = Form.useForm();
@@ -70,10 +109,12 @@ const OrderEntryModal: React.FC<OrderEntryModalProps> = ({ isVisible, onClose })
     setCustomerName('');
     setIsFormInvalid(true);
   };
+
   const handleClose = () => {
     resetForm();
     onClose();
   };
+
   const getValidationErrors = (): string[] => {
     const errors: string[] = [];
     
@@ -178,8 +219,8 @@ const OrderEntryModal: React.FC<OrderEntryModalProps> = ({ isVisible, onClose })
     return (
       <div className="map-container">
         <MapContainer
-          center={[-1.8312, -78.1834]} // Coordenadas de Ecuador
-          zoom={7}  // Zoom ajustado para visualización del país
+          center={[-1.8312, -78.1834]}
+          zoom={7}
           style={{ height: '100%', width: '100%' }}
         >
           <TileLayer

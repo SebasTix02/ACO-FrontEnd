@@ -27,7 +27,7 @@ export const Pedidos = () => {
                                 onClose={() => setIsModalVisible(false)}
                             />
                             <Button type="primary" icon={ <CarOutlined />} 
-                                className="custom-buttonI" onClick={() => navigate("/bloques")}>
+                                className="custom-buttonI" onClick={() => navigate("/rutas")}>
                                 Rutas
                             </Button>
                             <Button type="primary" icon={ <OrderedListOutlined />} 
