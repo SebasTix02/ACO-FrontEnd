@@ -1,0 +1,85 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Map container styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  min-height: 250px; /* Altura mínima para mobile */
+}
+
+/* Fix Leaflet marker icon */
+.leaflet-marker-icon {
+  margin-left: -12px !important;
+  margin-top: -41px !important;
+}
+
+/* Modal grid layouts */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-2-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .grid-4-cols {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive automático */
+  }
+}
+
+/* Map container height */
+.map-container {
+  height: 50vh; /* Altura relativa al viewport */
+  min-height: 300px;
+  max-height: 600px;
+  margin-bottom: 16px;
+}
+
+/* Table container */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+/* Form item styles */
+.form-item-full-width {
+  width: 100%;
+}
+
+/* Button alignment */
+.button-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center; /* Centrado en mobile */
+}
+
+@media (min-width: 768px) {
+  .button-container {
+    justify-content: flex-end; /* Alineación derecha en desktop */
+  }
+}
+.leaflet-control-geocoder-form {
+  width: 250px;
+  padding: 5px;
+}
+
+.leaflet-control-geocoder-form input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.leaflet-control-geocoder-icon {
+  background-image: url('https://cdn-icons-png.flaticon.com/512/484/484167.png') !important;
+  background-size: 20px;
+}
