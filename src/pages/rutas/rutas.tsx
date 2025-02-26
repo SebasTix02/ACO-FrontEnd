@@ -15,8 +15,8 @@ const Rutas = () => {
       lat: -0.1807,  // Coordenadas de Quito
       lon: -78.4678,
       products: [
-        { id: '1', name: 'Arroz', quantity: 100 },
-        { id: '2', name: 'Aceite', quantity: 50 }
+        { id: '1', name: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 100 },
+        { id: '2', name: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 50 }
       ],
       total: 2500,
       deliveryDate: '2024-03-20'
@@ -28,8 +28,8 @@ const Rutas = () => {
       lat: -2.1709,  // Coordenadas de Guayaquil
       lon: -79.9223,
       products: [
-        { id: '3', name: 'Arroz', quantity: 80 },
-        { id: '4', name: 'Sal', quantity: 120 }
+        { id: '3', name: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 80 },
+        { id: '4', name: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 120 }
       ],
       total: 1800,
       deliveryDate: '2024-03-21'
@@ -41,8 +41,8 @@ const Rutas = () => {
       lat: -2.9005,  // Coordenadas de Cuenca
       lon: -79.0045,
       products: [
-        { id: '5', name: 'Harina', quantity: 60 },
-        { id: '6', name: 'Leche', quantity: 90 }
+        { id: '5', name: 'FIDEOS VICTORIA CABELLO ANGEL 10KL', quantity: 60 },
+        { id: '6', name: 'FIDEOS VICTORIA ESPECIAL 400GMS X 30 UND', quantity: 90 }
       ],
       total: 2100,
       deliveryDate: '2024-03-22'
@@ -79,7 +79,7 @@ const Rutas = () => {
             </div>
           ) : (
             <div className="routes-visualization">
-              <h1 className="visualization-title">Rutas Optimizadas</h1>
+              <h1 className="visualization-title">Rutas Optimizadas - poner una tabla con buscador arriba para encontrar la optimizacion - un mapa abajo - un boton para decir que se culmino y que se eliminan esos pedidos</h1>
             </div>
           )}
         </main>

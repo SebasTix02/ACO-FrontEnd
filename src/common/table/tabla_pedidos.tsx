@@ -4,35 +4,12 @@ import {SearchOutlined,CloseOutlined} from '@ant-design/icons';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import './tabla_pedidos.css';
 import { Filter, Order } from '../../interfaces/interfaces';
+import { coordenadasProvincias } from '../../constants';
 
 const { RangePicker } = DatePicker;
 
-
-const ecuadorProvinces = [
-    { 
-      name: 'Pichincha', 
-      bounds: {
-        minLat: -0.5116, maxLat: 0.0987,
-        minLon: -78.9064, maxLon: -78.1834
-      }
-    },
-    {
-      name: 'Guayas',
-      bounds: {
-        minLat: -2.4549, maxLat: -1.5166,
-        minLon: -80.3667, maxLon: -79.2333
-      }
-    },
-    {
-      name: 'Azuay',
-      bounds: {
-        minLat: -3.3667, maxLat: -2.4667,
-        minLon: -79.5000, maxLon: -78.5000
-      }
-    }];
-
 const getProvinceFromCoords = (lat: number, lon: number): string => {
-    const province = ecuadorProvinces.find(p =>
+    const province = coordenadasProvincias.find(p =>
         lat >= p.bounds.minLat && lat <= p.bounds.maxLat &&
         lon >= p.bounds.minLon && lon <= p.bounds.maxLon
     );
@@ -175,7 +152,7 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     className="province-select"
                     value={selectedProvinces}
                     onChange={setSelectedProvinces}
-                    options={ecuadorProvinces.map(p => ({
+                    options={coordenadasProvincias.map(p => ({
                         value: p.name,
                         label: p.name
                     }))}
