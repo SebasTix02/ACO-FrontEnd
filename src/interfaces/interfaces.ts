@@ -33,3 +33,9 @@ export interface Filter {
     type: 'province' | 'dateRange';
     value: string | string[];
 }
+
+export interface Route {
+  id: string;
+  name: string;
+  geojson: any; // Usar @types/geojson para tipado más preciso en producción
+}

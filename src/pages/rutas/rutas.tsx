@@ -4,6 +4,7 @@ import Layout from '../../components/layout';
 import { Button } from 'antd';
 import OrdersTable from '../../common/table/tabla_pedidos';
 import './rutas.css';
+import VisualizacionRutas from '../../components/optimization/rutasOptimizadas';
 
 const Rutas = () => {
   const [showRoutesView, setShowRoutesView] = useState(false);
@@ -79,7 +80,7 @@ const Rutas = () => {
             </div>
           ) : (
             <div className="routes-visualization">
-              <h1 className="visualization-title">Rutas Optimizadas - poner una tabla con buscador arriba para encontrar la optimizacion - un mapa abajo - un boton para decir que se culmino y que se eliminan esos pedidos</h1>
+              <VisualizacionRutas orders={sampleOrders} />
             </div>
           )}
         </main>
