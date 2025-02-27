@@ -4,9 +4,11 @@
 .route-visualization-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 200px); /* Altura ajustada */
+  height: calc(100vh - 200px);
+  /* Altura ajustada */
   width: 100%;
-  overflow-y: auto; /* Añadido scroll vertical */
+  overflow-y: auto;
+  /* Añadido scroll vertical */
 }
 
 /* Selector de rutas */
@@ -14,7 +16,8 @@
   padding: 16px;
   background: #fff;
   z-index: 1000;
-  position: relative; /* Añadido */
+  position: relative;
+  /* Añadido */
 }
 
 .route-selector .ant-select {
@@ -26,8 +29,10 @@
 /* Contenedor del mapa */
 .route-map-container {
   flex: 1;
-  height: 50vh; /* Altura reducida */
-  min-height: 300px; /* Mínimo para mobile */
+  height: 50vh;
+  /* Altura reducida */
+  min-height: 300px;
+  /* Mínimo para mobile */
   width: 100%;
   margin: 0 auto;
   position: relative;
@@ -61,10 +66,11 @@
 .route-actions {
   padding: 16px 24px;
   background: #fff;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
   display: flex;
   gap: 16px;
-  justify-content: space-between; /* Cambiado a space-between */
+  justify-content: space-between;
+  /* Cambiado a space-between */
   position: sticky;
   bottom: 0;
   z-index: 1000;
@@ -72,7 +78,8 @@
 
 /* Estilos del dropdown */
 .ant-select-dropdown {
-  z-index: 2000 !important; /* Asegurar que el dropdown esté por encima */
+  z-index: 2000 !important;
+  /* Asegurar que el dropdown esté por encima */
 }
 
 .ant-select-item {
@@ -115,42 +122,78 @@
   padding: 20px 0;
 }
 
+/* Añadir al CSS */
+.leaflet-control-fullscreen {
+  background: #fff !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 10px !important;
+}
+
+.leaflet-control-fullscreen a {
+  color: #1890ff !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  
+
   .route-map-container {
-      height: 40vh; /* Altura reducida */
-      min-height: 250px;
-      width: 90%;
+    height: 40vh;
+    /* Altura reducida */
+    min-height: 250px;
+    width: 90%;
   }
-  
+
   .route-actions {
     margin-bottom: 20px;
     width: 100%;
     bottom: 0;
     left: 0;
-    display: flex; /* Asegúrate de que sea un contenedor flex */
-    flex-direction: row; /* Cambiado a fila */
-    align-items: center; /* Alinea los elementos verticalmente */
-    justify-content: center; /* Centra los botones horizontalmente */
-}
+    display: flex;
+    /* Asegúrate de que sea un contenedor flex */
+    flex-direction: row;
+    /* Cambiado a fila */
+    align-items: center;
+    /* Alinea los elementos verticalmente */
+    justify-content: center;
+    /* Centra los botones horizontalmente */
+  }
 
-.route-actions button {
-  z-index: 1000; 
-    width: auto; /* Cambia el ancho a automático para que sean más pequeños */
-    margin: 5px 2px; /* Espaciado horizontal entre botones */
-    padding: 5px 5px; /* Ajusta el padding para hacerlos más pequeños */
-}
+  .route-actions button {
+    z-index: 1000;
+    width: auto;
+    /* Cambia el ancho a automático para que sean más pequeños */
+    margin: 5px 2px;
+    /* Espaciado horizontal entre botones */
+    padding: 5px 5px;
+    /* Ajusta el padding para hacerlos más pequeños */
+  }
 
   .route-selector {
     padding: 8px;
     width: 100%;
-    z-index: 1000; 
+    z-index: 1000;
     margin-top: 28px;
-}
+  }
 
   .route-selector .ant-select {
-      width: 100% !important;
+    width: 100% !important;
+  }
+  .leaflet-control-fullscreen {
+    width: 60px !important; /* Aumenta el tamaño del contenedor */
+    height: 60px !important; /* Aumenta el tamaño del contenedor */
+  }
+
+  .leaflet-control-fullscreen content {
+    color: #1890ff !important; /* Cambia el color del icono */
+    font-size: 82px !important; /* Aumenta el tamaño del icono */
   }
 }
 
@@ -178,46 +221,48 @@
 .optimized-route-map {
   border-radius: 8px;
   margin: 0 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Actualizar media queries */
 @media (max-width: 480px) {
   .route-selector {
-      padding: 8px;
+    padding: 8px;
   }
 
   .ant-select-selection-search-input {
-      font-size: 16px !important; /* Texto más grande para móviles */
+    font-size: 16px !important;
+    /* Texto más grande para móviles */
   }
 
   .ant-select-item {
-      padding: 10px 12px !important;
+    padding: 10px 12px !important;
   }
 
   .route-option {
-      flex-direction: column;
-      align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .route-meta {
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 6px;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
   }
 
   .leaflet-control-zoom {
-      display: none; /* Ocultar controles de zoom en móviles */
+    display: none;
+    /* Ocultar controles de zoom en móviles */
   }
 }
 
 /* Añadir para pantallas muy pequeñas */
 @media (max-width: 350px) {
   .route-selector {
-      padding: 4px;
+    padding: 4px;
   }
 
   .ant-select-selection-placeholder {
-      font-size: 14px !important;
+    font-size: 14px !important;
   }
 }

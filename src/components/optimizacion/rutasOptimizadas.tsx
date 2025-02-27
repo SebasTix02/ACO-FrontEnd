@@ -4,8 +4,10 @@ import { MapContainer, GeoJSON, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './rutasOptimizadas.css';
 import { useEffect, useRef } from 'react';
-import { Map } from 'leaflet';
+import { Map, latLngBounds } from 'leaflet';
 import { optimizedRoutes } from '../../constants';
+import { FullscreenControl } from 'react-leaflet-fullscreen';
+import 'react-leaflet-fullscreen/styles.css';
 
 const { Option } = Select;
 
@@ -19,14 +21,23 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
         if (mapInstance && selectedRoute) {
             const route = optimizedRoutes.find(r => r.id === selectedRoute);
             if (route) {
-                // Centrar el mapa en la ruta seleccionada
-                const coordinates = route.geojson.features[0].geometry.coordinates[0];
-                mapInstance.flyTo([ -1.283089822, -78.61234654], 14);
+                const bounds = latLngBounds([]);
 
-                // Actualizar el GeoJSON
-                if (geoJsonRef.current) {
-                    geoJsonRef.current.clearLayers();
-                    geoJsonRef.current.addData(route.geojson);
+                route.geojson.features.forEach((feature: any) => {
+                    if (feature.geometry.type === 'LineString') {
+                        feature.geometry.coordinates.forEach((coord: [number, number]) => {
+                            bounds.extend([coord[1], coord[0]]);
+                        });
+                    } else if (feature.geometry.type === 'Point') {
+                        bounds.extend([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
+                    }
+                });
+
+                if (bounds.isValid()) {
+                    mapInstance.flyToBounds(bounds.pad(0.1), {
+                        animate: true,
+                        duration: 1.5
+                    });
                 }
             }
         }
@@ -68,7 +79,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     ))}
                 </Select>
             </div>
-    
+
             <div className="route-map-container">
                 <MapContainer
                     center={[-1.283089822, -78.61234654]}
@@ -79,10 +90,18 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; OpenStreetMap contributors'
                     />
-    
+
+                    <FullscreenControl
+                        position="topright"
+                        title="Pantalla completa"
+                        titleCancel="Salir de pantalla completa"
+                        content="⛶"
+                        forceSeparateButton={true}
+                    />
+
                     {selectedRoute && (
                         <GeoJSON
-                            key={selectedRoute} 
+                            key={selectedRoute}
                             data={optimizedRoutes.find(r => r.id === selectedRoute)!.geojson}
                             ref={geoJsonRef}
                             style={{ color: '#1890ff', weight: 4 }}
@@ -90,7 +109,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     )}
                 </MapContainer>
             </div>
-    
+
             <div className="route-actions">
                 <Button
                     danger
@@ -99,7 +118,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                 >
                     Cancelar Ruta
                 </Button>
-    
+
                 <Button
                     type="primary"
                     onClick={() => setShowCompleteModal(true)}
@@ -108,19 +127,19 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     Ruta Completada
                 </Button>
             </div>
-    
+
             <Modal
                 title="Confirmar Cancelación"
-                visible={showCancelModal}
+                open={showCancelModal}
                 onOk={() => setShowCancelModal(false)}
                 onCancel={() => setShowCancelModal(false)}
             >
                 <p>¿Está seguro que desea cancelar esta ruta?</p>
             </Modal>
-    
+
             <Modal
                 title="Confirmar Finalización"
-                visible={showCompleteModal}
+                open={showCompleteModal}
                 onOk={handleCompleteRoute}
                 onCancel={() => setShowCompleteModal(false)}
                 okText="Confirmar"
