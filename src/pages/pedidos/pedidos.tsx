@@ -5,7 +5,7 @@ import {  FileAddOutlined, CarOutlined, OrderedListOutlined} from '@ant-design/i
 import "../options.css"
 import { useNavigate } from "react-router-dom";
 import OrderEntryModal from "../../common/modal/modal_ingresar_pedido";
-import "../../common/modal/map.css";
+import "../../common/modal/mapa.css";
 
 export const Pedidos = () => {
     const navigate = useNavigate()
@@ -31,7 +31,7 @@ export const Pedidos = () => {
                                 Rutas
                             </Button>
                             <Button type="primary" icon={ <OrderedListOutlined />} 
-                                className="custom-buttonI" onClick={() => navigate("/ubicaciones")}>
+                                className="custom-buttonI" onClick={() => navigate("/verPedidos")}>
                                 Ver Pedidos
                             </Button>
                         </div>

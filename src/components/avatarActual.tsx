@@ -5,7 +5,7 @@ type Props = AvatarProps & {
     name: string;
 }
 
-function CustomAvatar({name, style, ...rest}: Props) {
+function AvatarActual({name, style, ...rest}: Props) {
   return (
     <AntdAvatar
     alt={'Usuario'}
@@ -25,4 +25,4 @@ function CustomAvatar({name, style, ...rest}: Props) {
   )
 }
 
-export default CustomAvatar
+export default AvatarActual

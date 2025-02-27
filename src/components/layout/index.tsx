@@ -11,7 +11,7 @@ const Layout = ({children}: React.PropsWithChildren) => {
     Title={(titleProps)=><ThemedTitleV2  {...titleProps} text="Vincere" icon={<img src={logo} alt="Logo" style={{ 
       width: '30px',
       padding: 'auto',
-      marginBottom: '20px' // Add some spacing between logo and text
+      marginBottom: '20px' 
     }}/>}/>} >
         {children}
         

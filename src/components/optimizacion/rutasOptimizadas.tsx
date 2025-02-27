@@ -9,12 +9,6 @@ import { optimizedRoutes } from '../../constants';
 
 const { Option } = Select;
 
-interface Route {
-    id: string;
-    name: string;
-    geojson: any; // Usar @types/geojson para tipado más preciso en producción
-}
-
 const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
     const [selectedRoute, setSelectedRoute] = useState<string>();
     const [showCancelModal, setShowCancelModal] = useState(false);
@@ -88,7 +82,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
 
                     {selectedRoute && (
                         <GeoJSON
-                            key={selectedRoute} // Forzar re-renderizado
+                            key={selectedRoute} 
                             data={optimizedRoutes.find(r => r.id === selectedRoute)!.geojson}
                             ref={geoJsonRef}
                             style={{ color: '#1890ff', weight: 4 }}

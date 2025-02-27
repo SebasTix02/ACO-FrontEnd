@@ -1,21 +1,20 @@
 import { Popover, Button } from 'antd';
 import React, { useState } from 'react';
-import CustomAvatar from '../custom-avatar';
+import AvatarActual from '../avatarActual';
 import { useGetIdentity } from '@refinedev/core';
 import { Text } from '../text';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
-const CurrentUser = () => {
+const UsuarioActual = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate(); // Hook to navigate
+    const navigate = useNavigate(); 
 
     const nombreUsuario = "Sebas";
 
     const handleLogout = () => {
-        // Perform any logout operations here if needed
-        setIsOpen(false); // Close the popover
-        navigate('/login'); // Redirect to the login page
+        setIsOpen(false); 
+        navigate('/login'); 
     };
 
     const content = (
@@ -35,7 +34,7 @@ const CurrentUser = () => {
                     icon={<LogoutOutlined />}
                     type='text'
                     block
-                    onClick={handleLogout} // Call handleLogout when button is clicked
+                    onClick={handleLogout} 
                 >
                     Salir
                 </Button>
@@ -52,7 +51,7 @@ const CurrentUser = () => {
                 overlayStyle={{ zIndex: 999 }}
                 content={content}
             >
-                <CustomAvatar
+                <AvatarActual
                     name={nombreUsuario}
                     src={"src/images/user.png"}
                     size="default"
@@ -63,4 +62,4 @@ const CurrentUser = () => {
     );
 }
 
-export default CurrentUser;
+export default UsuarioActual;

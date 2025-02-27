@@ -4,7 +4,7 @@ import Layout from '../../components/layout';
 import { Button } from 'antd';
 import OrdersTable from '../../common/table/tabla_pedidos';
 import './rutas.css';
-import VisualizacionRutas from '../../components/optimization/rutasOptimizadas';
+import VisualizacionRutas from '../../components/optimizacion/rutasOptimizadas';
 
 const Rutas = () => {
   const [showRoutesView, setShowRoutesView] = useState(false);

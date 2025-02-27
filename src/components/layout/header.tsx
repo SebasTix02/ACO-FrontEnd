@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import CurrentUser from "./current-user";
+import UsuarioActual from "./usuario-actual";
 import { Layout, Space } from "antd";
 const Header = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Header = () => {
     <>
       <Layout.Header style={headerStyles}>
         <Space align="center" size="middle">
-          <CurrentUser />
+          <UsuarioActual />
         </Space>
       </Layout.Header>
     </>
