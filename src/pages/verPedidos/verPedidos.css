@@ -1,0 +1,120 @@
+/* Estilos generales */
+.routes-container {
+    padding: 20px;
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  /* Header */
+  .routes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .routes-title {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    min-width: -moz-min-content;
+    min-width: min-content;
+    color: #1f1f1f;
+  }
+  
+  /* Botones */
+  .routes-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .route-button {
+    flex: 1 1 auto;
+    min-width: 160px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Modificar estas clases */
+.routes-content {
+    flex: 1;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .table-container {
+    flex: 1;
+    min-height: 300px;
+    overflow: auto;
+    position: relative;
+  }
+  
+  .summary-container {
+    padding: 16px;
+    background: #f8f9fa;
+    border-top: 1px solid #f0f0f0;
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+  }
+  /* Vista de visualización */
+  .routes-visualization {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+  }
+  
+  .visualization-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: #1890ff;
+    text-align: center;
+    margin: 0;
+  }
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .routes-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    /* Asegurar que los botones estén en la misma fila */
+    .routes-buttons {
+      display: flex;
+      flex-direction: row; /* Mantenerlos en la misma fila */
+      justify-content: center;
+      flex-wrap: nowrap; /* Evita que se apilen */
+      width: 100%;
+    }
+  
+    .route-button {
+      flex: 1;
+      min-width: unset;
+      text-align: center;
+    }
+  }
+  
+  
+  @media (max-width: 480px) {
+    .routes-container {
+      padding: 15px;
+    }
+    
+    .routes-buttons {
+      gap: 8px;
+    }
+    
+    .routes-visualization {
+      padding: 15px;
+    }
+  }
