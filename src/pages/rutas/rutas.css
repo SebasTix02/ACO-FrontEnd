@@ -87,17 +87,23 @@
       flex-direction: column;
       align-items: stretch;
     }
-    
-    .route-button {
+  
+    /* Asegurar que los botones estén en la misma fila */
+    .routes-buttons {
+      display: flex;
+      flex-direction: row; /* Mantenerlos en la misma fila */
+      justify-content: center;
+      flex-wrap: nowrap; /* Evita que se apilen */
       width: 100%;
-      min-width: unset;
     }
-    
-    .routes-content {
-      border-radius: 0;
-      box-shadow: none;
+  
+    .route-button {
+      flex: 1;
+      min-width: unset;
+      text-align: center;
     }
   }
+  
   
   @media (max-width: 480px) {
     .routes-container {

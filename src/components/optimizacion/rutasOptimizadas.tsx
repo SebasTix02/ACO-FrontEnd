@@ -68,7 +68,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     ))}
                 </Select>
             </div>
-
+    
             <div className="route-map-container">
                 <MapContainer
                     center={[-1.283089822, -78.61234654]}
@@ -79,7 +79,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; OpenStreetMap contributors'
                     />
-
+    
                     {selectedRoute && (
                         <GeoJSON
                             key={selectedRoute} 
@@ -90,7 +90,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     )}
                 </MapContainer>
             </div>
-
+    
             <div className="route-actions">
                 <Button
                     danger
@@ -99,7 +99,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                 >
                     Cancelar Ruta
                 </Button>
-
+    
                 <Button
                     type="primary"
                     onClick={() => setShowCompleteModal(true)}
@@ -108,7 +108,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     Ruta Completada
                 </Button>
             </div>
-
+    
             <Modal
                 title="Confirmar Cancelación"
                 visible={showCancelModal}
@@ -117,7 +117,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
             >
                 <p>¿Está seguro que desea cancelar esta ruta?</p>
             </Modal>
-
+    
             <Modal
                 title="Confirmar Finalización"
                 visible={showCompleteModal}
