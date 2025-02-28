@@ -3,6 +3,7 @@ import Layout from '../../components/layout';
 import { Order, ProductTable } from '../../interfaces/interfaces';
 import { Tag } from 'antd';
 import TablaPersonalizada from '../../common/table/tablaPersonalizada';
+import TablaVerPedidos from '../../common/table/tablaVerPedidos';
 
 
 export const VerPedidos = () => {
@@ -16,8 +17,8 @@ export const VerPedidos = () => {
       total: 150.75,
       deliveryDate: "2023-10-05",
       products: [
-        { id: "1", name: "Laptop", quantity: 1 },
-        { id: "2", name: "Mouse", quantity: 2 },
+        { id: "1", name: "FIDEO VICTORIA REGIN ENROSCADO 10K", quantity: 1 },
+        { id: "2", name: "FIDEO VICTORIA CABELLO DE ANGEL 10K", quantity: 2 },
       ],
     },
     {
@@ -29,8 +30,8 @@ export const VerPedidos = () => {
       total: 200.5,
       deliveryDate: "2023-10-06",
       products: [
-        { id: "3", name: "Teclado", quantity: 1 },
-        { id: "4", name: "Monitor", quantity: 1 },
+        { id: "3", name: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", quantity: 1 },
+        { id: "4", name: "FIDEOS VICTORIA REGIN (B)   10KL", quantity: 1 },
       ],
     },
     {
@@ -42,60 +43,25 @@ export const VerPedidos = () => {
       total: 99.99,
       deliveryDate: "2023-10-07",
       products: [
-        { id: "5", name: "USB Hub", quantity: 1 },
-        { id: "1", name: "Cargador", quantity: 2 },
+        { id: "5", name: "LAZO GIGANTE VICTORIA 10KL", quantity: 1 },
+        { id: "1", name: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", quantity: 2 },
       ],
     },
   ];
-  const columns = [
-    {
-      title: 'N° Orden',
-      dataIndex: 'orderNumber',
-      key: 'orderNumber',
-      sorter: (a: Order, b: Order) => a.orderNumber.localeCompare(b.orderNumber),
-    },
-    {
-      title: 'Cliente',
-      dataIndex: 'customer',
-      key: 'customer',
-      render: (text: string) => <Tag color="blue">{text}</Tag>,
-    },
-    {
-      title: 'Total',
-      dataIndex: 'total',
-      key: 'total',
-      render: (value: number) => `$${value.toFixed(2)}`,
-      sorter: (a: Order, b: Order) => a.total - b.total,
-    },
-    {
-      title: 'Fecha Entrega',
-      dataIndex: 'deliveryDate',
-      key: 'deliveryDate',
-      sorter: (a: Order, b: Order) =>
-        new Date(a.deliveryDate).getTime() - new Date(b.deliveryDate).getTime(),
-    },
-    {
-      title: 'Productos',
-      dataIndex: 'products',
-      key: 'products',
-      render: (products: ProductTable[]) => (
-        <Tag color="green">{products.length} productos</Tag>
-      ),
-    },
-  ];
+  
   return (
     
     <Layout>
       <div style={{ padding: '20px' }}>
         <h1 style={{ marginBottom: '20px' }}>Ver Pedidos</h1>
       </div>
-      <TablaPersonalizada<Order>
-        dataSource={data}
-        columns={columns}
-        rowKey="orderNumber"
-        searchFields={['orderNumber', 'customer', 'total']}
-        handleAdd={() => console.log('Agregar nuevo pedido')}
-      />
+      <TablaVerPedidos
+        data={data}
+            onAdd={() => console.log('Agregar nuevo pedido')}
+            onDelete={() => console.log('Eliminar nuevo pedido')}
+            onEdit={() => console.log('Editar nuevo pedido')}
+            searchFields={['orderNumber', 'customer']}
+        />
     </Layout>
   );
 };

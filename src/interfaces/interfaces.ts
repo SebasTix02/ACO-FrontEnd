@@ -13,7 +13,8 @@ export interface PedidoEntradaModalProps {
 
   
 export interface Order {
-    key: string;
+  [key: string]: any; // Add this line
+
     orderNumber: string;
     customer: string;
     lat: number;
