@@ -1,4 +1,4 @@
-import { Route } from "../interfaces/interfaces";
+import { Order, Route } from "../interfaces/interfaces";
 
 export const coordenadasProvincias = [
     {
@@ -6775,3 +6775,45 @@ export const coordenadasProvincias = [
         }
     }
 ];
+
+export const datosEstPedidos: Order[] = [
+    {
+      key: "1",
+      orderNumber: "ORD12345",
+      customer: "Juan Pérez",
+      lat: -34.6037,
+      lon: -58.3816,
+      total: 150.75,
+      deliveryDate: "2023-10-05",
+      products: [
+        { id: "1", name: "FIDEO VICTORIA REGIN ENROSCADO 10K", quantity: 1 },
+        { id: "2", name: "FIDEO VICTORIA CABELLO DE ANGEL 10K", quantity: 2 },
+      ],
+    },
+    {
+      key: "2",
+      orderNumber: "ORD12346",
+      customer: "Ana Gómez",
+      lat: -34.6118,
+      lon: -58.4173,
+      total: 200.5,
+      deliveryDate: "2023-10-06",
+      products: [
+        { id: "3", name: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", quantity: 1 },
+        { id: "4", name: "FIDEOS VICTORIA REGIN (B)   10KL", quantity: 1 },
+      ],
+    },
+    {
+      key: "3",
+      orderNumber: "ORD12347",
+      customer: "Carlos Ruiz",
+      lat: -34.5969,
+      lon: -58.3728,
+      total: 99.99,
+      deliveryDate: "2023-10-07",
+      products: [
+        { id: "5", name: "LAZO GIGANTE VICTORIA 10KL", quantity: 1 },
+        { id: "1", name: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", quantity: 2 },
+      ],
+    },
+  ];

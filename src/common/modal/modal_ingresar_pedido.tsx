@@ -75,7 +75,7 @@ const MapComponent: React.FC<{
     return null;
   };
 
-const OrderEntryModal: React.FC<PedidoEntradaModalProps> = ({ isVisible, onClose }) => {
+const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enCerrar }) => {
   const [form] = Form.useForm();
   const [selectedCustomer, setSelectedCustomer] = useState<string>();
   const [productList, setProductList] = useState<Product[]>([]);
@@ -99,7 +99,7 @@ const OrderEntryModal: React.FC<PedidoEntradaModalProps> = ({ isVisible, onClose
 
   const handleClose = () => {
     resetForm();
-    onClose();
+    enCerrar();
   };
 
   const getValidationErrors = (): string[] => {
@@ -197,7 +197,7 @@ const OrderEntryModal: React.FC<PedidoEntradaModalProps> = ({ isVisible, onClose
     
     console.log('Order data:', orderData);
     resetForm();
-    onClose();
+    enCerrar();
   };
 
   const renderMap = () => {
@@ -224,7 +224,7 @@ const OrderEntryModal: React.FC<PedidoEntradaModalProps> = ({ isVisible, onClose
   return (
     <Modal
       title="Ingresar Pedidos"
-      open={isVisible}
+      open={esVisible}
       onCancel={handleClose}  // Usamos handleClose modificado
       width={800}
       footer={[
@@ -297,4 +297,4 @@ const OrderEntryModal: React.FC<PedidoEntradaModalProps> = ({ isVisible, onClose
   );
 };
 
-export default OrderEntryModal;
+export default ModalIngresarPedido;

@@ -7,8 +7,8 @@ export interface Product {
   }
   
 export interface PedidoEntradaModalProps {
-    isVisible: boolean;
-    onClose: () => void;
+    esVisible: boolean;
+    enCerrar: () => void;
   }
 
   
