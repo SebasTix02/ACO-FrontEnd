@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Table, Tag, Button, Space, Modal, Form, Input, InputNumber, Select } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, DownOutlined } from '@ant-design/icons';
+import { Table, Tag, Button, Space, Input, Select } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Order } from '../../interfaces/interfaces';
-import "./tablaVerPedidos.css"
-// Componente principal
+import "./tablaVerPedidos.css";
+import ModalEditarPedido from '../modal/modal_editar_pedido';
+
 const TablaVerPedidos: React.FC<{
     data: Order[];
     onAdd: () => void;
@@ -11,12 +12,11 @@ const TablaVerPedidos: React.FC<{
     onEdit: (record: Order) => void;
     searchFields?: string[];
 }> = ({ data, onAdd, onDelete, onEdit, searchFields = ['orderNumber', 'customer'] }) => {
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-    const [form] = Form.useForm();
     const [searchText, setSearchText] = useState('');
     const [filterType, setFilterType] = useState<string>(searchFields[0]);
     const [filteredData, setFilteredData] = useState<Order[]>(data);
+    const [modalVisible, setModalVisible] = useState(false);
 
     // Columnas principales
     const columnasPedido = [
@@ -64,8 +64,7 @@ const TablaVerPedidos: React.FC<{
                         icon={<EditOutlined />}
                         onClick={() => {
                             setSelectedOrder(record);
-                            form.setFieldsValue(record);
-                            setIsModalVisible(true);
+                            setModalVisible(true);
                         }}
                     />
                     <Button
@@ -129,7 +128,7 @@ const TablaVerPedidos: React.FC<{
                 <Table
                     columns={columnasPedido}
                     dataSource={filteredData}
-                    rowKey="key"
+                    rowKey="orderNumber"
                     bordered
                     expandable={{
                         expandedRowRender: record => (
@@ -148,39 +147,18 @@ const TablaVerPedidos: React.FC<{
                 />
             </div>
 
-            {/* Modal de edición */}
-            <Modal
-                title={`Editar Pedido: ${selectedOrder?.orderNumber}`}
-                visible={isModalVisible}
-                onOk={() => {
-                    form.validateFields()
-                        .then(values => {
-                            onEdit({ ...selectedOrder, ...values });
-                            setIsModalVisible(false);
-                        })
-                        .catch(info => console.log('Error:', info));
-                }}
-                onCancel={() => setIsModalVisible(false)}
-                destroyOnClose
-            >
-                <Form form={form} layout="vertical">
-                    <Form.Item name="customer" label="Cliente" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item name="total" label="Total" rules={[{ required: true }]}>
-                        <InputNumber
-                            style={{ width: '100%' }}
-                            min={0}
-                            formatter={value => `$ ${value}`}
-                        />
-                    </Form.Item>
-
-                    <Form.Item name="deliveryDate" label="Fecha Entrega" rules={[{ required: true }]}>
-                        <Input type="date" />
-                    </Form.Item>
-                </Form>
-            </Modal>
+            {/* Nuevo Modal de edición */}
+            {selectedOrder && (
+                <ModalEditarPedido
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    order={selectedOrder}
+                    onSave={(updatedOrder) => {
+                        onEdit(updatedOrder);
+                        setModalVisible(false);
+                    }}
+                />
+            )}
         </div>
     );
 };
