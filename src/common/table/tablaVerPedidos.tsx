@@ -136,7 +136,7 @@ const TablaVerPedidos: React.FC<{
                                 {record.productos.map(product => (
                                     <div key={product.key} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', borderBottom: '1px solid #ddd', padding: '5px 0' }}>
                                         <span style={{ flex: 1, marginRight: 10 }}>{product.nombre}</span>
-                                        <span style={{ flex: 1, fontWeight: "bold"}}>{product.quantity}</span>
+                                        <span style={{ flex: 1, fontWeight: "bold"}}>{product.cantidad}</span>
                                     </div>
                                 ))}
                             </div>

@@ -70,7 +70,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
     const nuevoProducto: Product = {
       key: Date.now().toString(),
       nombre: values.producto,
-      quantity: values.cantidad,
+      cantidad: values.cantidad,
       price: values.precio,
       total: values.cantidad * values.precio,
     };
@@ -99,7 +99,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
       lat: posicion.lat,
       lon: posicion.lng,
       productos: productos,
-      total: productos.reduce((total, p) => total + (p.price * p.quantity), 0)
+      total: productos.reduce((total, p) => total + (p.price * p.cantidad), 0)
     };
 
     onSave(ordenActualizada);
@@ -185,7 +185,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
         <Table
           columns={[
             { title: 'Producto', dataIndex: 'nombre' },
-            { title: 'Cantidad', dataIndex: 'quantity' },
+            { title: 'Cantidad', dataIndex: 'cantidad' },
             { title: 'Precio Unitario', dataIndex: 'price' },
             { title: 'Total', dataIndex: 'total' },
             {

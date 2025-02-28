@@ -16,8 +16,8 @@ const Rutas = () => {
       lat: -0.1807,  // Coordenadas de Quito
       lon: -78.4678,
       productos: [
-        { key: '1', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 100, price:123, total:1000 },
-        { key: '2', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 50, price:123, total:1000 }
+        { key: '1', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', cantidad: 100, price:123, total:1000 },
+        { key: '2', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', cantidad: 50, price:123, total:1000 }
       ],
       total: 2500,
       fechaPedido: '2024-03-20'
@@ -29,8 +29,8 @@ const Rutas = () => {
       lat: -2.1709,  // Coordenadas de Guayaquil
       lon: -79.9223,
       productos: [
-        { key: '3', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 80, price:123, total:1000 },
-        { key: '4', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 120, price:123, total:1000 }
+        { key: '3', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', cantidad: 80, price:123, total:1000 },
+        { key: '4', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', cantidad: 120, price:123, total:1000 }
       ],
       total: 1800,
       fechaPedido: '2024-03-21'
@@ -42,8 +42,8 @@ const Rutas = () => {
       lat: -2.9005,  // Coordenadas de Cuenca
       lon: -79.0045,
       productos: [
-        { key: '5', nombre: 'FIDEOS VICTORIA CABELLO ANGEL 10KL', quantity: 60, price:123, total:1000 },
-        { key: '6', nombre: 'FIDEOS VICTORIA ESPECIAL 400GMS X 30 UND', quantity: 90, price:123, total:1000 }
+        { key: '5', nombre: 'FIDEOS VICTORIA CABELLO ANGEL 10KL', cantidad: 60, price:123, total:1000 },
+        { key: '6', nombre: 'FIDEOS VICTORIA ESPECIAL 400GMS X 30 UND', cantidad: 90, price:123, total:1000 }
       ],
       total: 2100,
       fechaPedido: '2024-03-22'

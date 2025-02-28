@@ -6786,8 +6786,8 @@ export const datosEstPedidos: Pedido[] = [
       total: 150.75,
       fechaPedido: "2023-10-05",
       productos: [
-        { key: "1", nombre: "FIDEO VICTORIA REGIN ENROSCADO 10K", quantity: 1, price: 12, total: 120 },
-        { key: "2", nombre: "FIDEO VICTORIA CABELLO DE ANGEL 10K", quantity: 2, price: 12, total: 120 },
+        { key: "1", nombre: "FIDEO VICTORIA REGIN ENROSCADO 10K", cantidad: 1, price: 12, total: 120 },
+        { key: "2", nombre: "FIDEO VICTORIA CABELLO DE ANGEL 10K", cantidad: 2, price: 12, total: 120 },
       ],
     },
     {
@@ -6799,8 +6799,8 @@ export const datosEstPedidos: Pedido[] = [
       total: 200.5,
       fechaPedido: "2023-10-06",
       productos: [
-        { key: "3", nombre: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", quantity: 1, price: 13, total: 130 },
-        { key: "4", nombre: "FIDEOS VICTORIA REGIN (B)   10KL", quantity: 1, price: 15, total: 160 },
+        { key: "3", nombre: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", cantidad: 1, price: 13, total: 130 },
+        { key: "4", nombre: "FIDEOS VICTORIA REGIN (B)   10KL", cantidad: 1, price: 15, total: 160 },
       ],
     },
     {
@@ -6812,8 +6812,8 @@ export const datosEstPedidos: Pedido[] = [
       total: 99.99,
       fechaPedido: "2023-10-07",
       productos: [
-        { key: "5", nombre: "LAZO GIGANTE VICTORIA 10KL", quantity: 1, price: 10, total: 10 },
-        { key: "1", nombre: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", quantity: 2, price: 11, total: 100 },
+        { key: "5", nombre: "LAZO GIGANTE VICTORIA 10KL", cantidad: 1, price: 10, total: 10 },
+        { key: "1", nombre: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", cantidad: 2, price: 11, total: 100 },
       ],
     },
   ];

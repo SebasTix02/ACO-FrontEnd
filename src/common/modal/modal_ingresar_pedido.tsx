@@ -133,8 +133,8 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
     },
     {
       title: 'Cantidad',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      dataIndex: 'cantidad',
+      key: 'cantidad',
       width: 120,
     },
     {
@@ -164,16 +164,16 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
   const handleAddProduct = () => {
     const values = form.getFieldsValue();
     const selectedProduct = productos.find(p => p.value === values.product);
-    if (selectedProduct && values.quantity && values.price) {
+    if (selectedProduct && values.cantidad && values.price) {
       const newProduct: Product = {
         key: Date.now().toString(),
         nombre: selectedProduct.label,
-        quantity: values.quantity,
+        cantidad: values.cantidad,
         price: values.price,
-        total: values.quantity * values.price,
+        total: values.cantidad * values.price,
       };
       setProductList([...productList, newProduct]);
-      form.resetFields(['product', 'quantity', 'price']);
+      form.resetFields(['product', 'cantidad', 'price']);
     }
   };
 
@@ -267,7 +267,7 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
             <Select options={productos} placeholder="Seleccione un producto" />
           </Form.Item>
 
-          <Form.Item label="Cantidad" name="quantity" required>
+          <Form.Item label="Cantidad" name="cantidad" required>
             <InputNumber min={1} className="form-item-full-width" />
           </Form.Item>
 

@@ -76,7 +76,7 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
           .filter(order => selectedOrders.includes(order.key))
           .flatMap(order => order.productos)
           .reduce((acc: {[key: string]: number}, product) => {
-            acc[product.nombre] = (acc[product.nombre] || 0) + product.quantity;
+            acc[product.nombre] = (acc[product.nombre] || 0) + product.cantidad;
             return acc;
           }, {});
       
@@ -107,9 +107,9 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
         <div style={{ margin: '20px 0' }}>
           <h3>Resumen de Productos Seleccionados:</h3>
           {Object.entries(productSummary).length > 0 ? (
-            Object.entries(productSummary).map(([product, quantity]) => (
+            Object.entries(productSummary).map(([product, cantidad]) => (
               <Tag color="blue" key={product}>
-                {product}: {quantity} unidades
+                {product}: {cantidad} unidades
               </Tag>
             ))
           ) : (
@@ -204,9 +204,8 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
                 dataSource={handleSearch()}
                 columns={columns}
                 rowSelection={rowSelection}
-
                 pagination={{ pageSize: 6 }}
-                scroll={{ x: 800 }}
+                scroll={{ x: 800}}
                 expandable={{
                     expandedRowRender: (record: Pedido) => (
                         <div className="expanded-content">
@@ -215,7 +214,7 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
                                 {record.productos.map(product => (
                                     <div key={product.key}>
                                         <Tag color="geekblue">
-                                            {product.nombre} ({product.quantity}u)
+                                            {product.nombre} ({product.cantidad}u)
                                         </Tag>
                                     </div>
                                 ))}

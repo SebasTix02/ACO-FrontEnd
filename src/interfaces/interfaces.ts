@@ -19,7 +19,7 @@ export interface Pedido {
 export interface Product {
   key: string;
   nombre: string;
-  quantity: number;
+  cantidad: number;
   price: number;
   total: number;
 }
