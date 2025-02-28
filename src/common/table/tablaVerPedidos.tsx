@@ -134,7 +134,7 @@ const TablaVerPedidos: React.FC<{
                         expandedRowRender: record => (
                             <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid #ddd', borderRadius: '4px', padding: '10px', width: '85%' }}>
                                 {record.products.map(product => (
-                                    <div key={product.id} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', borderBottom: '1px solid #ddd', padding: '5px 0' }}>
+                                    <div key={product.key} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', borderBottom: '1px solid #ddd', padding: '5px 0' }}>
                                         <span style={{ flex: 1, marginRight: 10 }}>{product.name}</span>
                                         <span style={{ flex: 1, fontWeight: "bold"}}>{product.quantity}</span>
                                     </div>

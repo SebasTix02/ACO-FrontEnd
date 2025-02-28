@@ -6,7 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
-import { ProductTable, Order } from '../../interfaces/interfaces';
+import { Product, Order } from '../../interfaces/interfaces';
 
 // Configuración de iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -52,7 +52,7 @@ const MapEditor: React.FC<{
 
 const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose, order, onSave }) => {
   const [form] = Form.useForm();
-  const [productos, setProductos] = useState<ProductTable[]>(order.products);
+  const [productos, setProductos] = useState<Product[]>(order.products);
   const [posicion, setPosicion] = useState<LatLng>(new LatLng(order.lat, order.lon));
 
   useEffect(() => {
@@ -67,11 +67,12 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
 
   const handleActualizarProducto = () => {
     const values = form.getFieldsValue(['producto', 'cantidad', 'precio']);
-    const nuevoProducto: ProductTable = {
-      id: Date.now().toString(),
+    const nuevoProducto: Product = {
+      key: Date.now().toString(),
       name: values.producto,
       quantity: values.cantidad,
-      price: values.precio
+      price: values.precio,
+      total: values.cantidad * values.precio,
     };
     setProductos([...productos, nuevoProducto]);
     form.resetFields(['producto', 'cantidad', 'precio']);
@@ -192,7 +193,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
               render: (_, record) => (
                 <Button
                   danger
-                  onClick={() => setProductos(productos.filter(p => p.id !== record.id))}
+                  onClick={() => setProductos(productos.filter(p => p.key !== record.key))}
                 >
                   Eliminar
                 </Button>
