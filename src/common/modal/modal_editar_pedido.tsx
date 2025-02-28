@@ -23,9 +23,9 @@ interface PedidoEdicionModalProps {
   onSave: (updatedOrder: Pedido) => void;
 }
 
-const MapEditor: React.FC<{ 
+const MapEditor: React.FC<{
   initialPosition: LatLng;
-  onPositionChange: (pos: LatLng) => void 
+  onPositionChange: (pos: LatLng) => void
 }> = ({ initialPosition, onPositionChange }) => {
   const map = useMap();
 
@@ -130,7 +130,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
           <Form.Item label="Número de Orden" name="numeroPedido">
             <Input disabled />
           </Form.Item>
-          
+
           <Form.Item label="Cliente" name="cliente" rules={[{ required: true }]}>
             <Select
               options={[
@@ -149,14 +149,13 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
             zoom={15}
             style={{ height: '100%', width: '100%' }}
           >
-            <MapEditor 
+            <MapEditor
               initialPosition={posicion}
               onPositionChange={setPosicion}
             />
           </MapContainer>
         </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr auto', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
           <Form.Item name="producto" label="Producto" rules={[{ required: true }]}>
             <Select
               options={[
@@ -181,7 +180,6 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
             </Button>
           </Form.Item>
         </div>
-
         <Table
           columns={[
             { title: 'Producto', dataIndex: 'nombre' },
