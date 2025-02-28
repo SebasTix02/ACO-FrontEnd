@@ -5,21 +5,20 @@ export interface PedidoEntradaModalProps {
     enCerrar: () => void;
   }
 
-  
-export interface Order {
+export interface Pedido {
   [key: string]: any; // Add this line
-    orderNumber: string;
-    customer: string;
+    numeroPedido: string;
+    cliente: string;
     lat: number;
     lon: number;
-    products: Product[];
+    productos: Product[];
     total: number;
-    deliveryDate: string;
+    fechaPedido: string;
 }
 
 export interface Product {
   key: string;
-  name: string;
+  nombre: string;
   quantity: number;
   price: number;
   total: number;

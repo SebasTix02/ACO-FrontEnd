@@ -6,7 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
-import { Product, Order } from '../../interfaces/interfaces';
+import { Product, Pedido } from '../../interfaces/interfaces';
 
 // Configuración de iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -19,8 +19,8 @@ L.Icon.Default.mergeOptions({
 interface PedidoEdicionModalProps {
   visible: boolean;
   onClose: () => void;
-  order: Order;
-  onSave: (updatedOrder: Order) => void;
+  order: Pedido;
+  onSave: (updatedOrder: Pedido) => void;
 }
 
 const MapEditor: React.FC<{ 
@@ -52,16 +52,16 @@ const MapEditor: React.FC<{
 
 const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose, order, onSave }) => {
   const [form] = Form.useForm();
-  const [productos, setProductos] = useState<Product[]>(order.products);
+  const [productos, setProductos] = useState<Product[]>(order.productos);
   const [posicion, setPosicion] = useState<LatLng>(new LatLng(order.lat, order.lon));
 
   useEffect(() => {
     form.setFieldsValue({
-      orderNumber: order.orderNumber,
-      customer: order.customer,
-      deliveryDate: order.deliveryDate,
+      numeroPedido: order.numeroPedido,
+      cliente: order.cliente,
+      fechaPedido: order.fechaPedido,
     });
-    setProductos(order.products);
+    setProductos(order.productos);
     setPosicion(new LatLng(order.lat, order.lon));
   }, [order]);
 
@@ -69,7 +69,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
     const values = form.getFieldsValue(['producto', 'cantidad', 'precio']);
     const nuevoProducto: Product = {
       key: Date.now().toString(),
-      name: values.producto,
+      nombre: values.producto,
       quantity: values.cantidad,
       price: values.precio,
       total: values.cantidad * values.precio,
@@ -80,7 +80,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
 
   const validarFormulario = () => {
     const errores: string[] = [];
-    if (!form.getFieldValue('customer')) errores.push('Cliente es requerido');
+    if (!form.getFieldValue('cliente')) errores.push('Cliente es requerido');
     if (productos.length === 0) errores.push('Debe tener al menos un producto');
     if (!posicion) errores.push('Ubicación es requerida');
     return errores;
@@ -93,12 +93,12 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
       return;
     }
 
-    const ordenActualizada: Order = {
+    const ordenActualizada: Pedido = {
       ...order,
       ...form.getFieldsValue(),
       lat: posicion.lat,
       lon: posicion.lng,
-      products: productos,
+      productos: productos,
       total: productos.reduce((total, p) => total + (p.price * p.quantity), 0)
     };
 
@@ -108,7 +108,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
 
   return (
     <Modal
-      title={`Editando Pedido: ${order.orderNumber}`}
+      title={`Editando Pedido: ${order.numeroPedido}`}
       open={visible}
       onCancel={onClose}
       width={900}
@@ -127,11 +127,11 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
     >
       <Form form={form} layout="vertical">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <Form.Item label="Número de Orden" name="orderNumber">
+          <Form.Item label="Número de Orden" name="numeroPedido">
             <Input disabled />
           </Form.Item>
           
-          <Form.Item label="Cliente" name="customer" rules={[{ required: true }]}>
+          <Form.Item label="Cliente" name="cliente" rules={[{ required: true }]}>
             <Select
               options={[
                 { value: 'CF', label: 'Consumidor Final' },
@@ -184,7 +184,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
 
         <Table
           columns={[
-            { title: 'Producto', dataIndex: 'name' },
+            { title: 'Producto', dataIndex: 'nombre' },
             { title: 'Cantidad', dataIndex: 'quantity' },
             { title: 'Precio Unitario', dataIndex: 'price' },
             { title: 'Total', dataIndex: 'total' },

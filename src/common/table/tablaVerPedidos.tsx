@@ -1,35 +1,35 @@
 import React, { useState } from 'react';
 import { Table, Tag, Button, Space, Input, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Order } from '../../interfaces/interfaces';
+import { Pedido } from '../../interfaces/interfaces';
 import "./tablaVerPedidos.css";
 import ModalEditarPedido from '../modal/modal_editar_pedido';
 
 const TablaVerPedidos: React.FC<{
-    data: Order[];
+    data: Pedido[];
     onAdd: () => void;
-    onDelete: (record: Order) => void;
-    onEdit: (record: Order) => void;
+    onDelete: (record: Pedido) => void;
+    onEdit: (record: Pedido) => void;
     searchFields?: string[];
-}> = ({ data, onAdd, onDelete, onEdit, searchFields = ['orderNumber', 'customer'] }) => {
-    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+}> = ({ data, onAdd, onDelete, onEdit, searchFields = ['numeroPedido', 'cliente'] }) => {
+    const [selectedOrder, setSelectedOrder] = useState<Pedido | null>(null);
     const [searchText, setSearchText] = useState('');
     const [filterType, setFilterType] = useState<string>(searchFields[0]);
-    const [filteredData, setFilteredData] = useState<Order[]>(data);
+    const [filteredData, setFilteredData] = useState<Pedido[]>(data);
     const [modalVisible, setModalVisible] = useState(false);
 
     // Columnas principales
     const columnasPedido = [
         {
             title: 'N° Orden',
-            dataIndex: 'orderNumber',
-            key: 'orderNumber',
-            sorter: (a: Order, b: Order) => a.orderNumber.localeCompare(b.orderNumber),
+            dataIndex: 'numeroPedido',
+            key: 'numeroPedido',
+            sorter: (a: Pedido, b: Pedido) => a.numeroPedido.localeCompare(b.numeroPedido),
         },
         {
             title: 'Cliente',
-            dataIndex: 'customer',
-            key: 'customer',
+            dataIndex: 'cliente',
+            key: 'cliente',
             render: (text: string) => <Tag color="blue">{text}</Tag>,
         },
         {
@@ -37,28 +37,28 @@ const TablaVerPedidos: React.FC<{
             dataIndex: 'total',
             key: 'total',
             render: (value: number) => `$${value.toFixed(2)}`,
-            sorter: (a: Order, b: Order) => a.total - b.total,
+            sorter: (a: Pedido, b: Pedido) => a.total - b.total,
         },
         {
-            title: 'Fecha Entrega',
-            dataIndex: 'deliveryDate',
-            key: 'deliveryDate',
-            sorter: (a: Order, b: Order) =>
-                new Date(a.deliveryDate).getTime() - new Date(b.deliveryDate).getTime(),
+            title: 'Fecha Pedido',
+            dataIndex: 'fechaPedido',
+            key: 'fechaPedido',
+            sorter: (a: Pedido, b: Pedido) =>
+                new Date(a.fechaPedido).getTime() - new Date(b.fechaPedido).getTime(),
         },
         {
             title: 'Productos',
-            key: 'products',
-            render: (_: any, record: Order) => (
+            key: 'productos',
+            render: (_: any, record: Pedido) => (
                 <Space>
-                    <Tag>{record.products.length} productos</Tag>
+                    <Tag>{record.productos.length} productos</Tag>
                 </Space>
             ),
         },
         {
             title: 'Acciones',
             key: 'actions',
-            render: (_: any, record: Order) => (
+            render: (_: any, record: Pedido) => (
                 <Space>
                     <Button
                         icon={<EditOutlined />}
@@ -128,20 +128,20 @@ const TablaVerPedidos: React.FC<{
                 <Table
                     columns={columnasPedido}
                     dataSource={filteredData}
-                    rowKey="orderNumber"
+                    rowKey="numeroPedido"
                     bordered
                     expandable={{
                         expandedRowRender: record => (
                             <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid #ddd', borderRadius: '4px', padding: '10px', width: '85%' }}>
-                                {record.products.map(product => (
+                                {record.productos.map(product => (
                                     <div key={product.key} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', borderBottom: '1px solid #ddd', padding: '5px 0' }}>
-                                        <span style={{ flex: 1, marginRight: 10 }}>{product.name}</span>
+                                        <span style={{ flex: 1, marginRight: 10 }}>{product.nombre}</span>
                                         <span style={{ flex: 1, fontWeight: "bold"}}>{product.quantity}</span>
                                     </div>
                                 ))}
                             </div>
                         ),
-                        rowExpandable: record => record.products.length > 0,
+                        rowExpandable: record => record.productos.length > 0,
                     }}
                     scroll={{ x: 'max-content' }}
                 />

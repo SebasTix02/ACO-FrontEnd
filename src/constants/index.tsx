@@ -1,4 +1,4 @@
-import { Order, Route } from "../interfaces/interfaces";
+import { Pedido, Route } from "../interfaces/interfaces";
 
 export const coordenadasProvincias = [
     {
@@ -6776,44 +6776,44 @@ export const coordenadasProvincias = [
     }
 ];
 
-export const datosEstPedidos: Order[] = [
+export const datosEstPedidos: Pedido[] = [
     {
       key: "1",
-      orderNumber: "ORD12345",
-      customer: "Juan Pérez",
+      numeroPedido: "ORD12345",
+      cliente: "Juan Pérez",
       lat: -34.6037,
       lon: -58.3816,
       total: 150.75,
-      deliveryDate: "2023-10-05",
-      products: [
-        { key: "1", name: "FIDEO VICTORIA REGIN ENROSCADO 10K", quantity: 1, price: 12, total: 120 },
-        { key: "2", name: "FIDEO VICTORIA CABELLO DE ANGEL 10K", quantity: 2, price: 12, total: 120 },
+      fechaPedido: "2023-10-05",
+      productos: [
+        { key: "1", nombre: "FIDEO VICTORIA REGIN ENROSCADO 10K", quantity: 1, price: 12, total: 120 },
+        { key: "2", nombre: "FIDEO VICTORIA CABELLO DE ANGEL 10K", quantity: 2, price: 12, total: 120 },
       ],
     },
     {
       key: "2",
-      orderNumber: "ORD12346",
-      customer: "Ana Gómez",
+      numeroPedido: "ORD12346",
+      cliente: "Ana Gómez",
       lat: -34.6118,
       lon: -58.4173,
       total: 200.5,
-      deliveryDate: "2023-10-06",
-      products: [
-        { key: "3", name: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", quantity: 1, price: 13, total: 130 },
-        { key: "4", name: "FIDEOS VICTORIA REGIN (B)   10KL", quantity: 1, price: 15, total: 160 },
+      fechaPedido: "2023-10-06",
+      productos: [
+        { key: "3", nombre: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", quantity: 1, price: 13, total: 130 },
+        { key: "4", nombre: "FIDEOS VICTORIA REGIN (B)   10KL", quantity: 1, price: 15, total: 160 },
       ],
     },
     {
       key: "3",
-      orderNumber: "ORD12347",
-      customer: "Carlos Ruiz",
+      numeroPedido: "ORD12347",
+      cliente: "Carlos Ruiz",
       lat: -34.5969,
       lon: -58.3728,
       total: 99.99,
-      deliveryDate: "2023-10-07",
-      products: [
-        { key: "5", name: "LAZO GIGANTE VICTORIA 10KL", quantity: 1, price: 10, total: 10 },
-        { key: "1", name: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", quantity: 2, price: 11, total: 100 },
+      fechaPedido: "2023-10-07",
+      productos: [
+        { key: "5", nombre: "LAZO GIGANTE VICTORIA 10KL", quantity: 1, price: 10, total: 10 },
+        { key: "1", nombre: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", quantity: 2, price: 11, total: 100 },
       ],
     },
   ];

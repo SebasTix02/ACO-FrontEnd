@@ -3,7 +3,7 @@ import {Table,Button,Tag,Select,DatePicker,Space,Checkbox,message} from 'antd';
 import {SearchOutlined,CloseOutlined} from '@ant-design/icons';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import './tabla_pedidos.css';
-import { Filter, Order } from '../../interfaces/interfaces';
+import { Filter, Pedido } from '../../interfaces/interfaces';
 import { coordenadasProvincias } from '../../constants';
 
 const { RangePicker } = DatePicker;
@@ -16,7 +16,7 @@ const getProvinceFromCoords = (lat: number, lon: number): string => {
     return province?.name || 'Desconocida';
 };
 
-const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
+const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
     const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
     const [productSummary, setProductSummary] = useState<{ [key: string]: number }>({});
     const [filters, setFilters] = useState<Filter[]>([]);
@@ -33,8 +33,8 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
                 selectedProvinces.includes(getProvinceFromCoords(order.lat, order.lon));
 
             const dateMatch = dateRange.length !== 2 || (
-                order.deliveryDate >= dateRange[0] &&
-                order.deliveryDate <= dateRange[1]
+                order.fechaPedido >= dateRange[0] &&
+                order.fechaPedido <= dateRange[1]
             );
 
             return provinceMatch && dateMatch;
@@ -74,9 +74,9 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
     useEffect(() => {
         const newSummary = orders
           .filter(order => selectedOrders.includes(order.key))
-          .flatMap(order => order.products)
+          .flatMap(order => order.productos)
           .reduce((acc: {[key: string]: number}, product) => {
-            acc[product.name] = (acc[product.name] || 0) + product.quantity;
+            acc[product.nombre] = (acc[product.nombre] || 0) + product.quantity;
             return acc;
           }, {});
       
@@ -118,19 +118,19 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
         </div>
       );
       const columns = [
-        { title: 'N° Orden', dataIndex: 'orderNumber' },
-        { title: 'Cliente', dataIndex: 'customer' },
+        { title: 'N° Orden', dataIndex: 'numeroPedido' },
+        { title: 'Cliente', dataIndex: 'cliente' },
         { 
           title: 'Provincia', 
           key: 'province',
-          render: (_: any, record: Order) => (
+          render: (_: any, record: Pedido) => (
             <Tag color="geekblue">
               {getProvinceFromCoords(record.lat, record.lon)}
             </Tag>
           )
         },
         { title: 'Total', dataIndex: 'total', render: (value: number) => `$${value.toFixed(2)}` },
-        { title: 'Fecha Entrega', dataIndex: 'deliveryDate' }
+        { title: 'Fecha Pedido', dataIndex: 'fechaPedido' }
       ];
     return (
         <div className="orders-table-container">
@@ -208,14 +208,14 @@ const OrdersTable: React.FC<{ orders: Order[] }> = ({ orders }) => {
                 pagination={{ pageSize: 6 }}
                 scroll={{ x: 800 }}
                 expandable={{
-                    expandedRowRender: (record: Order) => (
+                    expandedRowRender: (record: Pedido) => (
                         <div className="expanded-content">
                             <div>
                                 <h4>Productos</h4>
-                                {record.products.map(product => (
-                                    <div key={product.id}>
+                                {record.productos.map(product => (
+                                    <div key={product.key}>
                                         <Tag color="geekblue">
-                                            {product.name} ({product.quantity}u)
+                                            {product.nombre} ({product.quantity}u)
                                         </Tag>
                                     </div>
                                 ))}

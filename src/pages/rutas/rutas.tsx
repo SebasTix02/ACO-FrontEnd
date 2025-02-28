@@ -11,42 +11,42 @@ const Rutas = () => {
   const sampleOrders = [
     {
       key: '1',
-      orderNumber: 'ORD-001',
-      customer: 'Distribuidora Quito',
+      numeroPedido: 'ORD-001',
+      cliente: 'Distribuidora Quito',
       lat: -0.1807,  // Coordenadas de Quito
       lon: -78.4678,
-      products: [
-        { id: '1', name: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 100 },
-        { id: '2', name: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 50 }
+      productos: [
+        { key: '1', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 100, price:123, total:1000 },
+        { key: '2', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 50, price:123, total:1000 }
       ],
       total: 2500,
-      deliveryDate: '2024-03-20'
+      fechaPedido: '2024-03-20'
     },
     {
       key: '2',
-      orderNumber: 'ORD-002',
-      customer: 'Supermercado Guayaquil',
+      numeroPedido: 'ORD-002',
+      cliente: 'Supermercado Guayaquil',
       lat: -2.1709,  // Coordenadas de Guayaquil
       lon: -79.9223,
-      products: [
-        { id: '3', name: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 80 },
-        { id: '4', name: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 120 }
+      productos: [
+        { key: '3', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', quantity: 80, price:123, total:1000 },
+        { key: '4', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', quantity: 120, price:123, total:1000 }
       ],
       total: 1800,
-      deliveryDate: '2024-03-21'
+      fechaPedido: '2024-03-21'
     },
     {
       key: '3',
-      orderNumber: 'ORD-003',
-      customer: 'Tienda Cuenca',
+      numeroPedido: 'ORD-003',
+      cliente: 'Tienda Cuenca',
       lat: -2.9005,  // Coordenadas de Cuenca
       lon: -79.0045,
-      products: [
-        { id: '5', name: 'FIDEOS VICTORIA CABELLO ANGEL 10KL', quantity: 60 },
-        { id: '6', name: 'FIDEOS VICTORIA ESPECIAL 400GMS X 30 UND', quantity: 90 }
+      productos: [
+        { key: '5', nombre: 'FIDEOS VICTORIA CABELLO ANGEL 10KL', quantity: 60, price:123, total:1000 },
+        { key: '6', nombre: 'FIDEOS VICTORIA ESPECIAL 400GMS X 30 UND', quantity: 90, price:123, total:1000 }
       ],
       total: 2100,
-      deliveryDate: '2024-03-22'
+      fechaPedido: '2024-03-22'
     }
   ];
 

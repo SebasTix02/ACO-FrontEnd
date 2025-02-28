@@ -29,7 +29,7 @@ export const VerPedidos = () => {
         onAdd={() => setModalIngVisible(true)}
         onDelete={() => setmostrarModalEliminar(true)}
         onEdit={() => console.log('Editar nuevo pedido')}
-        searchFields={['orderNumber', 'customer']}
+        searchFields={['numeroPedido', 'cliente']}
       />
       <ModalIngresarPedido
         esVisible={modalIngVisible}

@@ -22,7 +22,7 @@ const customers = [
   { value: '3', label: 'Carlos López' },
 ];
 
-const products = [
+const productos = [
   { value: '1', label: 'Producto 1', price: 100 },
   { value: '2', label: 'Producto 2', price: 200 },
   { value: '3', label: 'Producto 3', price: 300 },
@@ -128,8 +128,8 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
   const columns = [
     {
       title: 'Producto',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'nombre',
+      key: 'nombre',
     },
     {
       title: 'Cantidad',
@@ -163,11 +163,11 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
 
   const handleAddProduct = () => {
     const values = form.getFieldsValue();
-    const selectedProduct = products.find(p => p.value === values.product);
+    const selectedProduct = productos.find(p => p.value === values.product);
     if (selectedProduct && values.quantity && values.price) {
       const newProduct: Product = {
         key: Date.now().toString(),
-        name: selectedProduct.label,
+        nombre: selectedProduct.label,
         quantity: values.quantity,
         price: values.price,
         total: values.quantity * values.price,
@@ -189,13 +189,13 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
     }
 
     const orderData = {
-      customer: selectedCustomer,
+      cliente: selectedCustomer,
       customerName: selectedCustomer === 'CF' ? customerName : '',
-      products: productList,
+      productos: productList,
       location: position,
     };
     
-    console.log('Order data:', orderData);
+    console.log('Pedido data:', orderData);
     resetForm();
     enCerrar();
   };
@@ -247,7 +247,7 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
         }
       }}>
         <div className="grid-container grid-2-cols">
-          <Form.Item label="Cliente" name="customer" required>
+          <Form.Item label="Cliente" name="cliente" required>
             <Select
               options={customers}
               onChange={value => setSelectedCustomer(value)}
@@ -264,7 +264,7 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
 
         <div className="grid-container grid-4-cols">
           <Form.Item label="Producto" name="product" required>
-            <Select options={products} placeholder="Seleccione un producto" />
+            <Select options={productos} placeholder="Seleccione un producto" />
           </Form.Item>
 
           <Form.Item label="Cantidad" name="quantity" required>
