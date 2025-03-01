@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table, Button, Input, Select, Tag } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import './tablaPerzonalizada.css';
+import { FiltroTabla } from '../../interfaces/interfaces';
 
 const { Option } = Select;
 
@@ -13,25 +14,20 @@ interface Props<T> {
   searchFields: string[];
 }
 
-interface Filter {
-  column: string;
-  value: string;
-}
-
 const TablaPersonalizada = <T extends object>({ dataSource, 
     columns, 
     rowKey, 
     handleAdd, 
     searchFields 
   }: Props<T>) => {
-    const [filters, setFilters] = useState<Filter[]>([]);
-    const [currentFilter, setCurrentFilter] = useState<Filter>({ column: '', value: '' });
+    const [filters, setFilters] = useState<FiltroTabla[]>([]);
+    const [currentFilter, setCurrentFilter] = useState<FiltroTabla>({ columna: '', valor: '' });
   
     const handleSearch = () => {
       return dataSource.filter((item: any) =>
         filters.every((filter) => {
-          const itemValue = item[filter.column];
-          const filterValue = filter.value.toLowerCase();
+          const itemValue = item[filter.columna];
+          const filterValue = filter.valor.toLowerCase();
   
           if (typeof itemValue === 'number') {
             return itemValue === Number(filterValue);
@@ -41,9 +37,9 @@ const TablaPersonalizada = <T extends object>({ dataSource,
       );
     };
   const addFilter = () => {
-    if (currentFilter.column && currentFilter.value) {
+    if (currentFilter.columna && currentFilter.valor) {
       setFilters((prevFilters) => [...prevFilters, currentFilter]);
-      setCurrentFilter({ column: '', value: '' });
+      setCurrentFilter({ columna: '', valor: '' });
     }
   };
 
@@ -63,20 +59,20 @@ const TablaPersonalizada = <T extends object>({ dataSource,
             className="search-select"
             placeholder="Seleccione campo"
             allowClear
-            value={currentFilter.column}
-            onChange={(value) => setCurrentFilter((prev) => ({ ...prev, column: value }))}
+            value={currentFilter.columna}
+            onChange={(value) => setCurrentFilter((prev) => ({ ...prev, columna: value }))}
           >
-            {columns.map((column) => (
-              searchFields.includes(column.dataIndex) && (
-                <Option key={column.dataIndex} value={column.dataIndex}>
-                  {column.title}
+            {columns.map((columna) => (
+              searchFields.includes(columna.dataIndex) && (
+                <Option key={columna.dataIndex} value={columna.dataIndex}>
+                  {columna.title}
                 </Option>
               )
             ))}
           </Select>
           <Input
             placeholder="Buscar..."
-            value={currentFilter.value}
+            value={currentFilter.valor}
             onChange={(e) => setCurrentFilter((prev) => ({ ...prev, value: e.target.value }))}
             className="search-input"
           />
@@ -100,7 +96,7 @@ const TablaPersonalizada = <T extends object>({ dataSource,
             closable
             onClose={() => removeFilter(index)}
           >
-            {columns.find((col) => col.dataIndex === filter.column)?.title}: {filter.value}
+            {columns.find((col) => col.dataIndex === filter.columna)?.title}: {filter.valor}
           </Tag>
         ))}
       </div>
@@ -114,10 +110,10 @@ const TablaPersonalizada = <T extends object>({ dataSource,
         expandable={{
           expandedRowRender: (record) => (
             <div style={{ margin: '10px 0' }}>
-              {columns.map((column) => (
-                searchFields.includes(column.dataIndex) && (
-                  <p key={column.dataIndex}>
-                    <strong>{column.title}:</strong> 
+              {columns.map((columna) => (
+                searchFields.includes(columna.dataIndex) && (
+                  <p key={columna.dataIndex}>
+                    <strong>{columna.title}:</strong> 
                   </p>
                 )
               ))}

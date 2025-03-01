@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
 interface PedidoEdicionModalProps {
   visible: boolean;
   onClose: () => void;
-  order: Pedido;
+  pedido: Pedido;
   onSave: (updatedOrder: Pedido) => void;
 }
 
@@ -50,20 +50,20 @@ const MapEditor: React.FC<{
   );
 };
 
-const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose, order, onSave }) => {
+const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose, pedido, onSave }) => {
   const [form] = Form.useForm();
-  const [productos, setProductos] = useState<Producto[]>(order.productos);
-  const [posicion, setPosicion] = useState<LatLng>(new LatLng(order.lat, order.lon));
+  const [productos, setProductos] = useState<Producto[]>(pedido.productos);
+  const [posicion, setPosicion] = useState<LatLng>(new LatLng(pedido.lat, pedido.lon));
 
   useEffect(() => {
     form.setFieldsValue({
-      numeroPedido: order.numeroPedido,
-      cliente: order.cliente,
-      fechaPedido: order.fechaPedido,
+      numeroPedido: pedido.numeroPedido,
+      cliente: pedido.cliente,
+      fechaPedido: pedido.fechaPedido,
     });
-    setProductos(order.productos);
-    setPosicion(new LatLng(order.lat, order.lon));
-  }, [order]);
+    setProductos(pedido.productos);
+    setPosicion(new LatLng(pedido.lat, pedido.lon));
+  }, [pedido]);
 
   const handleActualizarProducto = () => {
     const values = form.getFieldsValue(['producto', 'cantidad', 'precio']);
@@ -94,7 +94,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
     }
 
     const ordenActualizada: Pedido = {
-      ...order,
+      ...pedido,
       ...form.getFieldsValue(),
       lat: posicion.lat,
       lon: posicion.lng,
@@ -108,7 +108,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
 
   return (
     <Modal
-      title={`Editando Pedido: ${order.numeroPedido}`}
+      title={`Editando Pedido: ${pedido.numeroPedido}`}
       open={visible}
       onCancel={onClose}
       width={900}

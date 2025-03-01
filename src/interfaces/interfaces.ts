@@ -33,3 +33,8 @@ export interface Ruta {
   nombre: string;
   geojson: any; 
 }
+
+export interface FiltroTabla {
+  columna: string;
+  valor: string;
+}
