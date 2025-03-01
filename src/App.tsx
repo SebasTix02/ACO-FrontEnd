@@ -20,7 +20,7 @@ import { resources } from "./config/resources";
 import { Pedidos } from "./pages/pedidos/pedidos";
 import Rutas from "./pages/rutas/rutas";
 import { VerPedidos } from "./pages/verPedidos/verPedidos";
-import Reportes from "./pages/reportes/reportes";
+import Prediccion from "./pages/reportes/reportes";
 
 function App() {
   return (
@@ -53,7 +53,7 @@ function App() {
                   <Route path="/pedidos" element={<Pedidos />} />
                   <Route path="/rutas" element={<Rutas />} />
                   <Route path="/verPedidos" element={<VerPedidos/>} />
-                  <Route path="/reportes" element={<Reportes />} />
+                  <Route path="/prediccion" element={<Prediccion />} />
                 </Routes>
                 <RefineKbar />
                 <UnsavedChangesNotifier />

@@ -20,19 +20,19 @@ export const resources: IResourceItem[] = [
         icon: <CarOutlined />
       }
     },
-    {
+    /*{
       name: 'Inventario',
       list: '/inventario',
       meta: {
         label: 'Inventario',
         icon: <CopyOutlined/>
       }
-    }, 
+    }, */
     {
-      name: 'Reportes',
-      list: '/reportes',
+      name: 'Prediccion',
+      list: '/prediccion',
       meta: {
-        label: 'Reportes',
+        label: 'Prediccion',
         icon: <LineChartOutlined/>
       }
     },
