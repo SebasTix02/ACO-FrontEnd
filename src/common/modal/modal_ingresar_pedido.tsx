@@ -6,7 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider, SearchControl } from 'leaflet-
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
-import {Product, PedidoEntradaModalProps} from '../../interfaces/interfaces';
+import {Producto, PedidoEntradaModalProps} from '../../interfaces/interfaces';
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
@@ -23,9 +23,9 @@ const customers = [
 ];
 
 const productos = [
-  { value: '1', label: 'Producto 1', price: 100 },
-  { value: '2', label: 'Producto 2', price: 200 },
-  { value: '3', label: 'Producto 3', price: 300 },
+  { value: '1', label: 'Producto 1', precio: 100 },
+  { value: '2', label: 'Producto 2', precio: 200 },
+  { value: '3', label: 'Producto 3', precio: 300 },
 ];
 
 const MapComponent: React.FC<{ 
@@ -78,7 +78,7 @@ const MapComponent: React.FC<{
 const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enCerrar }) => {
   const [form] = Form.useForm();
   const [selectedCustomer, setSelectedCustomer] = useState<string>();
-  const [productList, setProductList] = useState<Product[]>([]);
+  const [productList, setProductList] = useState<Producto[]>([]);
   const [position, setPosition] = useState<LatLng | null>(null);
   const [customerName, setCustomerName] = useState('');
   const [isFormInvalid, setIsFormInvalid] = useState(true);
@@ -139,8 +139,8 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
     },
     {
       title: 'Precio',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'precio',
+      key: 'precio',
       width: 120,
     },
     {
@@ -153,7 +153,7 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
       title: 'Acciones',
       key: 'actions',
       width: 100,
-      render: (_: any, record: Product) => (
+      render: (_: any, record: Producto) => (
         <Button type="link" danger onClick={() => handleDelete(record.key)}>
           Eliminar
         </Button>
@@ -164,16 +164,16 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
   const handleAddProduct = () => {
     const values = form.getFieldsValue();
     const selectedProduct = productos.find(p => p.value === values.product);
-    if (selectedProduct && values.cantidad && values.price) {
-      const newProduct: Product = {
+    if (selectedProduct && values.cantidad && values.precio) {
+      const newProduct: Producto = {
         key: Date.now().toString(),
         nombre: selectedProduct.label,
         cantidad: values.cantidad,
-        price: values.price,
-        total: values.cantidad * values.price,
+        precio: values.precio,
+        total: values.cantidad * values.precio,
       };
       setProductList([...productList, newProduct]);
-      form.resetFields(['product', 'cantidad', 'price']);
+      form.resetFields(['product', 'cantidad', 'precio']);
     }
   };
 
@@ -271,7 +271,7 @@ const ModalIngresarPedido: React.FC<PedidoEntradaModalProps> = ({ esVisible, enC
             <InputNumber min={1} className="form-item-full-width" />
           </Form.Item>
 
-          <Form.Item label="Precio" name="price" required>
+          <Form.Item label="Precio" name="precio" required>
             <InputNumber min={0} className="form-item-full-width" />
           </Form.Item>
 

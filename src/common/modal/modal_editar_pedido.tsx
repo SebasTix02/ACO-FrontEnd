@@ -6,7 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
-import { Product, Pedido } from '../../interfaces/interfaces';
+import { Producto, Pedido } from '../../interfaces/interfaces';
 
 // Configuración de iconos de Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -52,7 +52,7 @@ const MapEditor: React.FC<{
 
 const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose, order, onSave }) => {
   const [form] = Form.useForm();
-  const [productos, setProductos] = useState<Product[]>(order.productos);
+  const [productos, setProductos] = useState<Producto[]>(order.productos);
   const [posicion, setPosicion] = useState<LatLng>(new LatLng(order.lat, order.lon));
 
   useEffect(() => {
@@ -67,11 +67,11 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
 
   const handleActualizarProducto = () => {
     const values = form.getFieldsValue(['producto', 'cantidad', 'precio']);
-    const nuevoProducto: Product = {
+    const nuevoProducto: Producto = {
       key: Date.now().toString(),
       nombre: values.producto,
       cantidad: values.cantidad,
-      price: values.precio,
+      precio: values.precio,
       total: values.cantidad * values.precio,
     };
     setProductos([...productos, nuevoProducto]);
@@ -99,7 +99,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
       lat: posicion.lat,
       lon: posicion.lng,
       productos: productos,
-      total: productos.reduce((total, p) => total + (p.price * p.cantidad), 0)
+      total: productos.reduce((total, p) => total + (p.precio * p.cantidad), 0)
     };
 
     onSave(ordenActualizada);
@@ -184,7 +184,7 @@ const ModalEditarPedido: React.FC<PedidoEdicionModalProps> = ({ visible, onClose
           columns={[
             { title: 'Producto', dataIndex: 'nombre' },
             { title: 'Cantidad', dataIndex: 'cantidad' },
-            { title: 'Precio Unitario', dataIndex: 'price' },
+            { title: 'Precio Unitario', dataIndex: 'precio' },
             { title: 'Total', dataIndex: 'total' },
             {
               title: 'Acciones',

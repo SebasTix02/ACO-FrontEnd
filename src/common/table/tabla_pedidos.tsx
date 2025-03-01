@@ -3,7 +3,7 @@ import {Table,Button,Tag,Select,DatePicker,Space,Checkbox,message} from 'antd';
 import {SearchOutlined,CloseOutlined} from '@ant-design/icons';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import './tabla_pedidos.css';
-import { Filter, Pedido } from '../../interfaces/interfaces';
+import { FiltroProvinciaFecha, Pedido } from '../../interfaces/interfaces';
 import { coordenadasProvincias } from '../../constants';
 
 const { RangePicker } = DatePicker;
@@ -19,7 +19,7 @@ const getProvinceFromCoords = (lat: number, lon: number): string => {
 const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
     const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
     const [productSummary, setProductSummary] = useState<{ [key: string]: number }>({});
-    const [filters, setFilters] = useState<Filter[]>([]);
+    const [filters, setFilters] = useState<FiltroProvinciaFecha[]>([]);
     const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
     const [dateRange, setDateRange] = useState<string[]>([]);
 
@@ -42,19 +42,19 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
     };
 
     const addFilter = () => {
-        const newFilters: Filter[] = [];
+        const newFilters: FiltroProvinciaFecha[] = [];
 
         if (selectedProvinces.length > 0) {
             newFilters.push({
-                type: 'province',
-                value: selectedProvinces.join(', ')
+                tipo: 'provincia',
+                valor: selectedProvinces.join(', ')
             });
         }
 
         if (dateRange.length === 2) {
             newFilters.push({
-                type: 'dateRange',
-                value: dateRange
+                tipo: 'rangoFecha',
+                valor: dateRange
             });
         }
 
@@ -122,7 +122,7 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
         { title: 'Cliente', dataIndex: 'cliente' },
         { 
           title: 'Provincia', 
-          key: 'province',
+          key: 'provincia',
           render: (_: any, record: Pedido) => (
             <Tag color="geekblue">
               {getProvinceFromCoords(record.lat, record.lon)}
@@ -192,9 +192,9 @@ const OrdersTable: React.FC<{ orders: any[] }> = ({ orders }) => {
                         onClose={() => removeFilter(index)}
                         className="filter-tag"
                     >
-                        {filter.type === 'province'
-                            ? `Provincia: ${filter.value}`
-                            : `Fecha: ${(filter.value as string[]).join(' -> ')}`}
+                        {filter.tipo === 'provincia'
+                            ? `Provincia: ${filter.valor}`
+                            : `Fecha: ${(filter.valor as string[]).join(' -> ')}`}
                     </Tag>
                 ))}
             </div>

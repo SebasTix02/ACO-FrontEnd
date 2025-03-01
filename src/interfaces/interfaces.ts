@@ -11,25 +11,25 @@ export interface Pedido {
     cliente: string;
     lat: number;
     lon: number;
-    productos: Product[];
+    productos: Producto[];
     total: number;
     fechaPedido: string;
 }
 
-export interface Product {
+export interface Producto {
   key: string;
   nombre: string;
   cantidad: number;
-  price: number;
+  precio: number;
   total: number;
 }
-export interface Filter {
-    type: 'province' | 'dateRange';
-    value: string | string[];
+export interface FiltroProvinciaFecha {
+    tipo: 'provincia' | 'rangoFecha';
+    valor: string | string[];
 }
 
-export interface Route {
+export interface Ruta {
   id: string;
-  name: string;
+  nombre: string;
   geojson: any; 
 }
