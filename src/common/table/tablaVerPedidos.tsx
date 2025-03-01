@@ -152,7 +152,7 @@ const TablaVerPedidos: React.FC<{
                 <ModalEditarPedido
                     visible={modalVisible}
                     onClose={() => setModalVisible(false)}
-                    order={selectedOrder}
+                    pedido={selectedOrder}
                     onSave={(updatedOrder) => {
                         onEdit(updatedOrder);
                         setModalVisible(false);

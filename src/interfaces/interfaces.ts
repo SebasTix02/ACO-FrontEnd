@@ -38,3 +38,12 @@ export interface FiltroTabla {
   columna: string;
   valor: string;
 }
+
+export interface Usuario {
+  id: string;
+  usuario: string;
+  contraseña: string;
+  nombre: string;
+  apellido: string;
+  privilegios: string;
+}
