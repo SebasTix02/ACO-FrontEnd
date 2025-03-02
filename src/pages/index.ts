@@ -1,6 +1,6 @@
 export * from './login';
-export * from './register';
+export * from './registro';
 export * from './home';
-export * from './usuarios/list';
-export * from './inventory';
+export * from './usuarios/usuarios';
+export * from './inventario';
 
