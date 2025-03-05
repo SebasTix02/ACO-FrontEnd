@@ -42,7 +42,7 @@ export interface FiltroTabla {
 export interface Usuario {
   id: string;
   usuario: string;
-  contraseña: string;
+  clave: string;
   nombre: string;
   apellido: string;
   privilegios: string;

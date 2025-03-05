@@ -42,7 +42,7 @@ const ModalEditarUsuario: React.FC<ModalEditarUsuarioProps> = ({ visible, onClos
                 </Form.Item>
 
                 <Form.Item
-                    name="contraseña"
+                    name="clave"
                     label="Contraseña"
                     rules={[{ required: true }]}
                 >

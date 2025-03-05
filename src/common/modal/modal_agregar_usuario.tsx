@@ -41,7 +41,7 @@ const ModalAgregarUsuario: React.FC<ModalAgregarUsuarioProps> = ({ visible, onCl
                 </Form.Item>
 
                 <Form.Item
-                    name="contraseña"
+                    name="clave"
                     label="Contraseña"
                     rules={[{ required: true }]}
                 >

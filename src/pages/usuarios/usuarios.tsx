@@ -10,7 +10,7 @@ export const ListaUsuarios = () => {
     {
       id: '1',
       usuario: 'admin',
-      contraseña: 'admin123',
+      clave: 'admin123',
       nombre: 'Juan',
       apellido: 'Pérez',
       privilegios: 'admin'
@@ -18,10 +18,10 @@ export const ListaUsuarios = () => {
     {
       id: '2',
       usuario: 'ventas1',
-      contraseña: 'ventas123',
+      clave: 'ventas123',
       nombre: 'María',
       apellido: 'Gómez',
-      privilegios: 'usuario'
+      privilegios: 'basico'
     }
   ]);
 

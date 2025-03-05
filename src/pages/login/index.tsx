@@ -37,7 +37,7 @@ export const Login = () => {
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-title">Ingreso <p></p></h2>
-        <h3 className="login-description">Ingrese su usuario y contraseña para acceder</h3>
+        <h3 className="login-description">Ingrese su usuario y clave para acceder</h3>
         <form onSubmit={handleSubmit}>
           <div className="login-form-item">
             <label style={{ color: 'white' }} htmlFor="email">Ingresa tu usuario</label>
@@ -45,7 +45,7 @@ export const Login = () => {
           </div>
 
           <div className="login-form-item">
-            <label style={{ color: 'white' }} htmlFor="password">Ingresa tu contraseña</label>
+            <label style={{ color: 'white' }} htmlFor="password">Ingresa tu clave</label>
             <input id="password" type="password" placeholder="Contraseña" ref={passwordRef} className="login-input" />
           </div>
 
