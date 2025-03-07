@@ -1,17 +1,16 @@
-import { API_URL } from "../data";
 import axios from 'axios';
+import { API_URL } from '../data';
+const API_LOGIN = `${API_URL}/auth/login`;
 
-const API_LOGIN = `${API_URL}/login`
-
-export const loginUser = async (loginData:any) => {
+export const loginUser = async (loginData: any) => {
     try {
-        const response = await axios.post(`${API_LOGIN}`, loginData);
+        const response = await axios.post(API_LOGIN, loginData);
         const data = response.data;
         return {
             success: true,
             user: data,
         };
-    } catch (error:any) {
+    } catch (error: any) {
         return {
             success: false,
             error: {
@@ -20,4 +19,3 @@ export const loginUser = async (loginData:any) => {
         };
     }
 };
-
