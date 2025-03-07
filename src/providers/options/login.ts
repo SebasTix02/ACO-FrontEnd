@@ -9,7 +9,6 @@ export const loginUser = async (loginData: { usuario: string; clave: string }) =
             user: response.data.usuario // Asegúrate que el backend no envía el token en la respuesta
         };
     } catch (error: any) {
-        console.log(error.response);
         return {
             success: false,
             error: {

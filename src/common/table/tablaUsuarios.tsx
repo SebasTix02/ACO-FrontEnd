@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space, Input, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Usuario } from '../../interfaces/interfaces';
@@ -13,12 +13,30 @@ const TablaUsuarios: React.FC<{
     onDelete: (id: string) => void;
     onEdit: (usuario: Usuario) => void;
     searchFields?: string[];
-}> = ({ data, onAdd, onDelete, onEdit, searchFields = ['usuario', 'nombre'] }) => {
-    const [selectedUsuario, setSelectedUsuario] = useState<Usuario | null>(null);
-    const [searchText, setSearchText] = useState('');
-    const [filterType, setFilterType] = useState<string>(searchFields[0]);
-    const [filteredData, setFilteredData] = useState<Usuario[]>(data);
+}> = ({ data, onAdd, onDelete, onEdit, searchFields = ['usuario', 'nombre', 'apellido'] }) => {
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
+    const [textoBusqueda, setTextoBusqueda] = useState('');
+    const [tipoFiltro, setTipoFiltro] = useState<string>(searchFields[0]);
+    const [datosFiltrados, setDatosFiltrados] = useState<Usuario[]>(data);
     const [modalVisible, setModalVisible] = useState<'add' | 'edit' | 'delete' | null>(null);
+
+    // Actualizar datos filtrados cuando cambien los datos
+    useEffect(() => {
+        setDatosFiltrados(data);
+    }, [data]);
+
+    const handleSearch = (valor: string) => {
+        setTextoBusqueda(valor);
+        if (!valor) {
+            setDatosFiltrados(data);
+            return;
+        }
+        const filtrados = data.filter(usuario => {
+            const valorCampo = (usuario as any)[tipoFiltro]?.toString().toLowerCase();
+            return valorCampo?.includes(valor.toLowerCase());
+        });
+        setDatosFiltrados(filtrados);
+    };
 
     const columnasUsuario = [
         {
@@ -30,27 +48,29 @@ const TablaUsuarios: React.FC<{
         {
             title: 'Nombre Completo',
             key: 'nombre',
-            render: (_: any, record: Usuario) => (
-                <span>{record.nombre} {record.apellido}</span>
+            render: (_: any, registro: Usuario) => (
+                <span>{registro.nombre} {registro.apellido}</span>
             ),
         },
         {
             title: 'Privilegios',
             dataIndex: 'privilegios',
             key: 'privilegios',
-            render: (text: string) => (
-                <Tag color={text === 'admin' ? 'gold' : 'geekblue'}>{text.toUpperCase()}</Tag>
+            render: (texto: string) => (
+                <Tag color={texto === 'admin' ? 'gold' : 'geekblue'}>
+                    {texto.toUpperCase()}
+                </Tag>
             ),
         },
         {
             title: 'Acciones',
-            key: 'actions',
-            render: (_: any, record: Usuario) => (
+            key: 'acciones',
+            render: (_: any, registro: Usuario) => (
                 <Space>
                     <Button
                         icon={<EditOutlined />}
                         onClick={() => {
-                            setSelectedUsuario(record);
+                            setUsuarioSeleccionado(registro);
                             setModalVisible('edit');
                         }}
                     />
@@ -58,7 +78,7 @@ const TablaUsuarios: React.FC<{
                         danger
                         icon={<DeleteOutlined />}
                         onClick={() => {
-                            setSelectedUsuario(record);
+                            setUsuarioSeleccionado(registro);
                             setModalVisible('delete');
                         }}
                     />
@@ -67,33 +87,24 @@ const TablaUsuarios: React.FC<{
         },
     ];
 
-    const handleSearch = (value: string) => {
-        setSearchText(value);
-        const filtered = data.filter(usuario => {
-            const fieldValue = (usuario as any)[filterType]?.toString().toLowerCase();
-            return fieldValue?.includes(value.toLowerCase());
-        });
-        setFilteredData(filtered);
-    };
-
     return (
         <div className="table-container">
             <div className="search-bar-container">
                 <div className="search-bar">
                     <Select
                         defaultValue={searchFields[0]}
-                        onChange={value => setFilterType(value)}
+                        onChange={valor => setTipoFiltro(valor)}
                         className="search-select"
                     >
-                        {searchFields.map(field => (
-                            <Select.Option key={field} value={field}>
-                                {field.replace(/([A-Z])/g, ' $1').trim()}
+                        {searchFields.map(campo => (
+                            <Select.Option key={campo} value={campo}>
+                                {campo.replace(/([A-Z])/g, ' $1').trim()}
                             </Select.Option>
                         ))}
                     </Select>
 
                     <Input.Search
-                        placeholder={`Buscar por ${filterType}...`}
+                        placeholder={`Buscar por ${tipoFiltro}...`}
                         allowClear
                         onSearch={handleSearch}
                         onChange={e => handleSearch(e.target.value)}
@@ -114,8 +125,8 @@ const TablaUsuarios: React.FC<{
             <div className="table-scroll">
                 <Table
                     columns={columnasUsuario}
-                    dataSource={filteredData}
-                    rowKey="id"
+                    dataSource={datosFiltrados}
+                    rowKey={(registro: Usuario) => registro.id.toString()}
                     bordered
                     scroll={{ x: 'max-content' }}
                 />
@@ -131,12 +142,12 @@ const TablaUsuarios: React.FC<{
                 }}
             />
 
-            {selectedUsuario && (
+            {usuarioSeleccionado && (
                 <>
                     <ModalEditarUsuario
                         visible={modalVisible === 'edit'}
                         onClose={() => setModalVisible(null)}
-                        usuario={selectedUsuario}
+                        usuario={usuarioSeleccionado}
                         onSave={(usuarioActualizado) => {
                             onEdit(usuarioActualizado);
                             setModalVisible(null);
@@ -146,9 +157,9 @@ const TablaUsuarios: React.FC<{
                     <ModalEliminarUsuario
                         visible={modalVisible === 'delete'}
                         onClose={() => setModalVisible(null)}
-                        usuario={selectedUsuario}
+                        usuario={usuarioSeleccionado}
                         onConfirm={() => {
-                            onDelete(selectedUsuario.id);
+                            onDelete(usuarioSeleccionado.id.toString());
                             setModalVisible(null);
                         }}
                     />
