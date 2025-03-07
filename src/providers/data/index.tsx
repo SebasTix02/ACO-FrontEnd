@@ -3,8 +3,8 @@ import graphqlDataProvider, { GraphQLClient
  } from "@refinedev/nestjs-query";
 import { fetchWrapper } from "./fetch-wrapper";
 import {createClient} from "graphql-ws"
-export const API_BASE_URL = "http://localhost:3000"
-export const API_URL = `${API_BASE_URL}/api`
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+export const API_URL = `${API_BASE_URL}/api`;
 
 export const WS_URL = 'wss://api.crm.refine.dev/graphql'
 export const client = new GraphQLClient(API_URL, {

@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-// Configuración esencial para trabajar con cookies
-axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL + '/api';
 axios.defaults.withCredentials = true;
-
 
 export default axios;
