@@ -69,7 +69,7 @@ const VisualizacionRutas: React.FC<{ orders: any[] }> = ({ orders }) => {
                     {optimizedRoutes.map(route => (
                         <Option key={route.id} value={route.id}>
                             <div className="route-option">
-                                <span>{route.name}</span>
+                                <span>{route.nombre}</span>
                                 <div className="route-meta">
                                     <Tag color="blue">12 pedidos</Tag>
                                     <Tag color="green">58 km</Tag>

@@ -1,26 +1,34 @@
 import { Popover, Button } from 'antd';
 import React, { useState } from 'react';
 import AvatarActual from '../avatarActual';
-import { useGetIdentity } from '@refinedev/core';
+import { useGetIdentity, useLogout } from '@refinedev/core'; // Añadir useLogout
 import { Text } from '../text';
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../providers/options/login';
 
 const UsuarioActual = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const { data: user } = useGetIdentity<{ name: string }>(); 
 
-    const nombreUsuario = "Sebas";
-
-    const handleLogout = () => {
-        setIsOpen(false); 
-        navigate('/login'); 
+    const handleLogout = async () => {
+        setIsOpen(false);
+        
+        try {
+            await logoutUser(); // Usar función de logout
+            // Redirigir y forzar recarga para limpiar estado
+            navigate('/login');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
     };
 
     const content = (
         <div style={{ display: "flex", flexDirection: 'column' }}>
             <Text strong style={{ padding: "12px 20px" }}>
-                
+                {user?.name || 'Usuario'} {/* Mostrar nombre real del usuario */}
             </Text>
             <div style={{
                 borderTop: '1px solid #d9d9d9',
@@ -34,7 +42,7 @@ const UsuarioActual = () => {
                     icon={<LogoutOutlined />}
                     type='text'
                     block
-                    onClick={handleLogout} 
+                    onClick={handleLogout} // Usar el nuevo handler
                 >
                     Salir
                 </Button>
@@ -52,7 +60,7 @@ const UsuarioActual = () => {
                 content={content}
             >
                 <AvatarActual
-                    name={nombreUsuario}
+                    name={user?.name || 'Usuario'} 
                     src={"src/images/user.png"}
                     size="default"
                     style={{ cursor: 'pointer' }}

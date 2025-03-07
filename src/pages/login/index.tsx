@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../providers/options/login'; // Importar la función loginUser
+import { checkSession, loginUser } from '../../providers/options/login';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
@@ -10,6 +10,17 @@ export const Login = () => {
   const usuarioRef = useRef<HTMLInputElement>(null);
   const claveRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  // Verificar sesión al cargar el componente
+  useEffect(() => {
+    const checkExistingSession = async () => {
+      const result = await checkSession();
+      if (result.success) {
+        navigate('/');
+      }
+    };
+    checkExistingSession();
+  }, [navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,16 +31,15 @@ export const Login = () => {
       toast.error('Por favor complete todos los campos');
       return;
     }
-
-    const loginData = { usuario, clave };
-
-    const result:any = await loginUser(loginData);
-
-    if (result.success) {
-      toast.success('Usuario logueado correctamente');
-      navigate('/');
+    const result = await loginUser({ usuario, clave });
+    console.log(result.success);
+    if (result.success == false) {
+      toast.error('Error en las credenciales');
     } else {
-      toast.error('Datos incorrectos. Por favor, intente nuevamente.');
+      const sessionCheck = await checkSession();
+      if (sessionCheck.success || result.success) {
+        navigate('/');
+      }
     }
   };
 

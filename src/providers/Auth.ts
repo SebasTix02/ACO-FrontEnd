@@ -1,37 +1,16 @@
 import { AuthProvider } from "@refinedev/core";
-
 import { API_URL, dataProvider } from "./data";
-
-/**
- * For demo purposes and to make it easier to test the app, you can use the following credentials:
- */
-export const authCredentials = {
-  email: "michael.scott@dundermifflin.com",
-  password: "demodemo",
-};
+import axios from "../config/axios";
 
 export const authProvider: AuthProvider = {
-  login: async ({ email }) => {
+  login: async ({ email, password }) => {
     try {
-      const { data } = await dataProvider.custom({
-        url: API_URL,
-        method: "post",
-        headers: {},
-        meta: {
-          variables: { email },
-          rawQuery: `
-                mutation Login($email: String!) {
-                    login(loginInput: {
-                      email: $email
-                    }) {
-                      accessToken,
-                    }
-                  }
-                `,
-        },
-      });
-
-      localStorage.setItem("access_token", data.login.accessToken);
+      // Cambiar a solicitud directa con axios para manejar cookies
+      await axios.post(
+        `${API_URL}/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      );
 
       return {
         success: true,
@@ -39,7 +18,6 @@ export const authProvider: AuthProvider = {
       };
     } catch (e) {
       const error = e as Error;
-
       return {
         success: false,
         error: {
@@ -51,42 +29,37 @@ export const authProvider: AuthProvider = {
   },
 
   logout: async () => {
-    localStorage.removeItem("access_token");
-
-    return {
-      success: true,
-      redirectTo: "/login",
-    };
+    try {
+      await axios.post(
+        `${API_URL}/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
+    } finally {
+      return {
+        success: true,
+        redirectTo: "/login",
+      };
+    }
   },
+
   onError: async (error) => {
-    if (error.statusCode === "UNAUTHENTICATED") {
+    if (error.statusCode === 401) {
       return {
         logout: true,
       };
     }
-
     return { error };
   },
+
   check: async () => {
     try {
-      await dataProvider.custom({
-        url: API_URL,
-        method: "post",
-        headers: {},
-        meta: {
-          rawQuery: `
-                    query Me {
-                        me {
-                          name
-                        }
-                      }
-                `,
-        },
+      // Verificar sesión usando el endpoint del backend
+      await axios.get(`${API_URL}/auth/check-session`, {
+        withCredentials: true,
       });
-
       return {
         authenticated: true,
-        redirectTo: "/",
       };
     } catch (error) {
       return {
@@ -95,36 +68,14 @@ export const authProvider: AuthProvider = {
       };
     }
   },
+
   getIdentity: async () => {
-    const accessToken = localStorage.getItem("access_token");
-
     try {
-      const { data } = await dataProvider.custom<{ me: any }>({
-        url: API_URL,
-        method: "post",
-        headers: accessToken
-          ? {
-              Authorization: `Bearer ${accessToken}`,
-            }
-          : {},
-        meta: {
-          rawQuery: `
-                    query Me {
-                        me {
-                            id,
-                            name,
-                            email,
-                            phone,
-                            jobTitle,
-                            timezone
-                            avatarUrl
-                        }
-                      }
-                `,
-        },
+      // Obtener datos del usuario desde el backend
+      const response = await axios.get(`${API_URL}/auth/check-session`, {
+        withCredentials: true,
       });
-
-      return data.me;
+      return response.data;
     } catch (error) {
       return undefined;
     }
