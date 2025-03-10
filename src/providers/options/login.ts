@@ -41,7 +41,7 @@ export const checkSession = async () => {
 export const logoutUser = async () => {
     try {
       const response = await axios.post('/auth/logout', {}, {
-        withCredentials: true // ¡IMPORTANTE! Envía la cookie
+        withCredentials: true 
       });
       
       // Forzar recarga para limpiar estado

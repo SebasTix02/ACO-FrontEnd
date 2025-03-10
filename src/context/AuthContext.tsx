@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       navigate('/login');
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error('Logout fallido:', error);
     }
   };
 

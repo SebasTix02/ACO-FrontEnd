@@ -22,6 +22,7 @@ export interface Producto {
   cantidad: number;
   precio: number;
   total: number;
+  cod_art: number;
 }
 export interface FiltroProvinciaFecha {
     tipo: 'provincia' | 'rangoFecha';
@@ -46,4 +47,19 @@ export interface Usuario {
   nombre: string;
   apellido: string;
   privilegios: string;
+}
+
+
+export interface Articulo {
+  cod_art: string;
+  nombre_art: string;
+  cod_subgrupo: string;
+  costo: string;
+}
+
+export interface ArticuloPedido extends Articulo {
+  key: string;
+  cantidad: number;
+  precio: number;
+  total: number;
 }
