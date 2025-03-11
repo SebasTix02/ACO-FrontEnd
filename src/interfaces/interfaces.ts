@@ -13,9 +13,11 @@ export interface Pedido {
     lon: number;
     productos: Producto[];
     total: number;
-    fechaPedido: string;
+    fecha_pedido: string;
 }
-
+export interface ProductSummary {
+  [key: string]: number;
+}
 export interface Producto {
   key: string;
   nombre: string;
@@ -59,6 +61,34 @@ export interface Articulo {
 
 export interface ArticuloPedido extends Articulo {
   key: string;
+  cantidad: number;
+  precio: number;
+  total: number;
+}
+export interface DetallePedido {
+  id_detalle: number;
+  cod_art: string;
+  nombre_articulo: string;
+  cantidad: number;
+  precio_unitario: number;
+  subtotal: number;
+}
+
+export interface MappedOrder {
+  key: string;
+  numeroPedido: string;
+  cliente: string;
+  lat: number;
+  lon: number;
+  productos: MappedDetalle[];
+  total: number;
+  fechaPedido: string;
+  estado: string;
+}
+
+export interface MappedDetalle {
+  key: string;
+  nombre: string;
   cantidad: number;
   precio: number;
   total: number;

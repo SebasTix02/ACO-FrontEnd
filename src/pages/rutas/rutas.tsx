@@ -1,54 +1,70 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../components/layout';
 import { Button } from 'antd';
 import OrdersTable from '../../common/table/tabla_pedidos';
 import './rutas.css';
 import VisualizacionRutas from '../../components/optimizacion/rutasOptimizadas';
+import { listarPedidos } from '../../providers/options/pedidos';
+import { MappedDetalle, MappedOrder, Pedido } from '../../interfaces/interfaces';
 
 const Rutas = () => {
   const [showRoutesView, setShowRoutesView] = useState(false);
-  const sampleOrders = [
-    {
-      key: '1',
-      numeroPedido: 'ORD-001',
-      cliente: 'Distribuidora Quito',
-      lat: -0.1807,  // Coordenadas de Quito
-      lon: -78.4678,
-      productos: [
-        { key: '1', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', cantidad: 100, precio:123, total:1000 },
-        { key: '2', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', cantidad: 50, precio:123, total:1000 }
-      ],
-      total: 2500,
-      fechaPedido: '2024-03-20'
-    },
-    {
-      key: '2',
-      numeroPedido: 'ORD-002',
-      cliente: 'Supermercado Guayaquil',
-      lat: -2.1709,  // Coordenadas de Guayaquil
-      lon: -79.9223,
-      productos: [
-        { key: '3', nombre: 'FIDEO VICTORIA REGIN ENROSCADO 10K', cantidad: 80, precio:123, total:1000 },
-        { key: '4', nombre: 'FIDEOS VICTORIA ESPECIAL 500G X 25 UND', cantidad: 120, precio:123, total:1000 }
-      ],
-      total: 1800,
-      fechaPedido: '2024-03-21'
-    },
-    {
-      key: '3',
-      numeroPedido: 'ORD-003',
-      cliente: 'Tienda Cuenca',
-      lat: -2.9005,  // Coordenadas de Cuenca
-      lon: -79.0045,
-      productos: [
-        { key: '5', nombre: 'FIDEOS VICTORIA CABELLO ANGEL 10KL', cantidad: 60, precio:123, total:1000 },
-        { key: '6', nombre: 'FIDEOS VICTORIA ESPECIAL 400GMS X 30 UND', cantidad: 90, precio:123, total:1000 }
-      ],
-      total: 2100,
-      fechaPedido: '2024-03-22'
-    }
-  ];
+  const [orders, setOrders] = useState<Pedido[]>([]);
+
+  // Cargar pedidos desde la API
+  useEffect(() => {
+    const fetchPedidos = async () => {
+      try {
+        const response = await listarPedidos();
+        if (response.exito) {
+          // Mapear directamente a la interfaz Pedido
+          const pedidosFormateados = response.pedidos.map((pedido: any) => ({
+            id_pedido: pedido.id_pedido,
+            numero_pedido: pedido.numero_pedido,
+            nombre_cliente: pedido.nombre_cliente,
+            lat: parseFloat(pedido.latitud),
+            lon: parseFloat(pedido.longitud),
+            detalles: pedido.detalles.map((detalle: any) => ({
+              id_detalle: detalle.id_detalle,
+              cod_art: detalle.cod_art,
+              nombre_articulo: detalle.nombre_articulo,
+              cantidad: detalle.cantidad,
+              precio_unitario: detalle.precio_unitario,
+              subtotal: detalle.subtotal
+            })),
+            total: pedido.total,
+            fecha_pedido: pedido.fecha_pedido,
+            estado: pedido.estado
+          }));
+          setOrders(pedidosFormateados);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    fetchPedidos();
+  }, []);
+
+  
+
+  const mappedOrders: MappedOrder[] = orders.map((order: Pedido): MappedOrder => ({
+    key: order.id_pedido.toString(),
+    numeroPedido: order.numero_pedido,
+    cliente: order.nombre_cliente,
+    lat: order.lat,
+    lon: order.lon,
+    productos: order.detalles.map((detalle: Pedido['detalles'][0]): MappedDetalle => ({
+      key: detalle.id_detalle.toString(),
+      nombre: detalle.nombre_articulo,
+      cantidad: detalle.cantidad,
+      precio: detalle.precio_unitario,
+      total: detalle.subtotal
+    })),
+    total: order.total,
+    fechaPedido: order.fecha_pedido,
+    estado: order.estado
+  }));
 
   return (
     <Layout>
@@ -76,11 +92,11 @@ const Rutas = () => {
         <main className="routes-content">
           {!showRoutesView ? (
             <div className="table-container">
-              <OrdersTable orders={sampleOrders} />
+              <OrdersTable orders={orders} />
             </div>
           ) : (
             <div className="routes-visualization">
-              <VisualizacionRutas orders={sampleOrders} />
+              <VisualizacionRutas orders={mappedOrders} />
             </div>
           )}
         </main>
