@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Tag, Select, DatePicker, Space, Checkbox, message } from 'antd';
+import { Table, Button, Tag, Select, DatePicker, Space, Checkbox, message, Modal } from 'antd';
 import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import './tabla_pedidos.css';
 import { DetallePedido, FiltroProvinciaFecha, Pedido, Producto, ProductSummary } from '../../interfaces/interfaces';
 import { coordenadasProvincias } from '../../constants';
+import { optimizarRuta } from '../../providers/options/openRoute';
+import { crearRuta } from '../../providers/options/rutas';
+import { actualizarPedido } from '../../providers/options/pedidos';
 
 const { RangePicker } = DatePicker;
 
@@ -15,14 +18,58 @@ const getProvinceFromCoords = (lat: number, lon: number): string => {
     );
     return province?.name || 'Desconocida';
 };
-
+const ModalInicioRuta: React.FC<{ visible: boolean, onCancel: () => void, onConfirm: (ubicacion: any) => void }> = ({ visible, onCancel, onConfirm }) => {
+    const [selectedUbicacion, setSelectedUbicacion] = useState(null);
+    
+    const ubicacionesInicio = [
+      { nombre: 'Ambato', coordenadas: [-78.61234903335573, -1.2830400896671588] },
+      { nombre: 'Cevallos', coordenadas: [-78.633441, -1.360463] }
+    ];
+  
+    return (
+      <Modal
+        title="Seleccionar punto de inicio"
+        open={visible}
+        onCancel={onCancel}
+        footer={[
+          <Button key="cancel" onClick={onCancel}>Cancelar</Button>,
+          <Button
+            key="confirm"
+            type="primary"
+            onClick={() => onConfirm(selectedUbicacion)}
+            disabled={!selectedUbicacion}
+          >
+            Confirmar
+          </Button>
+        ]}
+      >
+        <Select
+          placeholder="Seleccione ubicación inicial"
+          style={{ width: '100%' }}
+          onChange={value => setSelectedUbicacion(JSON.parse(value))}
+          options={ubicacionesInicio.map(ubicacion => ({
+            value: JSON.stringify(ubicacion.coordenadas),
+            label: ubicacion.nombre,
+          }))}
+        />
+      </Modal>
+    );
+  };
 const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
     const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
     const [productSummary, setProductSummary] = useState<{ [key: string]: number }>({});
     const [filters, setFilters] = useState<FiltroProvinciaFecha[]>([]);
     const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
     const [dateRange, setDateRange] = useState<string[]>([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
+  // Función para convertir minutos a formato HH:MM:SS
+  const convertMinutesToTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = Math.floor(minutes % 60);
+    const seconds = Math.floor((minutes * 60) % 60);
+    return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
     // Procesar pedidos con datos calculados
     const processedOrders = orders
         .filter(order => !['CANCELADO', 'COMPLETADO'].includes(order.estado))
@@ -35,7 +82,55 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
                 0
             )
         }));
+        const handleConfirmRouteStart = async (startPoint: number[]) => {
+            setModalVisible(false);
+            
+            try {
+              // 1. Optimizar la ruta
+              console.log(orders)
+              const ubicaciones = orders
+                .filter(order => selectedOrders.includes(order.id_pedido.toString()))
+                .map(order => ({
+                  tracking_id: order.id_pedido,
+                  cluster: 0,
+                  lat: order.lat,
+                  lng: order.lon
+                }));
+        
+              const optimizacionData = {
+                coordenadasInicio: startPoint,
+                ubicaciones
+              };
+              console.log(optimizacionData)
+              const resultadoOptimizacion = await optimizarRuta(optimizacionData.coordenadasInicio, optimizacionData.ubicaciones);
+              
+              // 2. Crear la ruta
+              const rutaData = {
+                estado: "GENERADA",
+                distancia_total: resultadoOptimizacion.rutaOptimizada.mejorDistancia,
+                tiempo_estimado: convertMinutesToTime(resultadoOptimizacion.rutaOptimizada.mejorDuracion),
+                geojson: resultadoOptimizacion.rutaOptimizada.datosRuta
+              };
+        
+              const nuevaRuta = await crearRuta(rutaData);
+              
+              if (!nuevaRuta.exito) {
+                throw new Error('Error al crear la ruta');
+              }
 
+              // 3. Actualizar los pedidos
+              const updatePromises = orders
+                .filter(order => selectedOrders.includes(order.id_pedido.toString()))
+                .map(order => actualizarPedido(order.id_pedido, { id_ruta: nuevaRuta.ruta.id_ruta }));
+        
+              await Promise.all(updatePromises);
+              
+              message.success('Ruta generada y pedidos actualizados exitosamente!');
+              
+            } catch (error) {
+              message.error('Error al generar la ruta: ' + (error as Error).message);
+            }
+          };
     const handleDateChange: RangePickerProps['onChange'] = (_, dateStrings) => {
         setDateRange(dateStrings);
     };
@@ -44,9 +139,6 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
         return processedOrders.filter(order => {
             const provinceMatch = selectedProvinces.length === 0 ||
                 selectedProvinces.includes(order.provincia);
-            console.log("rango 1:", dateRange[0]);
-            console.log("rango 2:", dateRange[1]);
-            console.log("fecha:", order.fecha_pedido);
             const dateMatch = dateRange.length !== 2 || (
                 new Date(order.fecha_pedido) >= new Date(dateRange[0]) &&
                 new Date(order.fecha_pedido) <= new Date(dateRange[1])
@@ -89,7 +181,6 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
     };
 
     useEffect(() => {
-        console.log("IDs seleccionados:", selectedOrders);
 
         const newSummary = orders
             .filter(order => selectedOrders.includes(order.id_pedido.toString()))
@@ -113,13 +204,14 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
         renderCell: () => null
     };
 
-    const handleGenerateRoute = () => {
+    const handleGenerateRoute = async () => {
         if (selectedOrders.length === 0) {
-            message.error('Seleccione al menos un pedido para generar la ruta');
-            return;
+          message.error('Seleccione al menos un pedido para generar la ruta');
+          return;
         }
-        message.success('Ruta óptima generada con éxito!', 3);
-    };
+        setModalVisible(true);
+      };
+      
 
     const renderProductSummary = () => (
         <div style={{ margin: '20px 0' }}>
@@ -198,9 +290,14 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
                 new Date(a.fecha_pedido).getTime() - new Date(b.fecha_pedido).getTime()
         }
     ];
-
+    
     return (
     <div className="orders-table-container">
+        <ModalInicioRuta
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={handleConfirmRouteStart}
+      />
         {/* Sección de Filtros */}
         <div className="filters-section">
             <div className="filters-row">

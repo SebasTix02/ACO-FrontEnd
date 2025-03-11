@@ -6776,44 +6776,7 @@ export const coordenadasProvincias = [
     }
 ];
 
-export const datosEstPedidos: Pedido[] = [
-    {
-      key: "1",
-      numeroPedido: "ORD12345",
-      cliente: "Juan Pérez",
-      lat: -34.6037,
-      lon: -58.3816,
-      total: 150.75,
-      fechaPedido: "2023-10-05",
-      productos: [
-        { key: "1", nombre: "FIDEO VICTORIA REGIN ENROSCADO 10K", cantidad: 1, precio: 12, total: 120 },
-        { key: "2", nombre: "FIDEO VICTORIA CABELLO DE ANGEL 10K", cantidad: 2, precio: 12, total: 120 },
-      ],
-    },
-    {
-      key: "2",
-      numeroPedido: "ORD12346",
-      cliente: "Ana Gómez",
-      lat: -34.6118,
-      lon: -58.4173,
-      total: 200.5,
-      fechaPedido: "2023-10-06",
-      productos: [
-        { key: "3", nombre: "FIDEOS VICTORIA ESPECIAL 500G X 25 UND", cantidad: 1, precio: 13, total: 130 },
-        { key: "4", nombre: "FIDEOS VICTORIA REGIN (B)   10KL", cantidad: 1, precio: 15, total: 160 },
-      ],
-    },
-    {
-      key: "3",
-      numeroPedido: "ORD12347",
-      cliente: "Carlos Ruiz",
-      lat: -34.5969,
-      lon: -58.3728,
-      total: 99.99,
-      fechaPedido: "2023-10-07",
-      productos: [
-        { key: "5", nombre: "LAZO GIGANTE VICTORIA 10KL", cantidad: 1, precio: 10, total: 10 },
-        { key: "1", nombre: "FIDEOS VICTORIA LAZO GRANDE 1500GMS", cantidad: 2, precio: 11, total: 100 },
-      ],
-    },
+export const ubicacionesInicio = [
+    { nombre: 'Ambato', coordenadas: [-78.61234903335573, -1.2830400896671588] },
+    { nombre: 'Cevallos', coordenadas: [-78.633441, -1.360463] }
   ];
