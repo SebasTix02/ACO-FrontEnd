@@ -20,42 +20,42 @@ const getProvinceFromCoords = (lat: number, lon: number): string => {
 };
 const ModalInicioRuta: React.FC<{ visible: boolean, onCancel: () => void, onConfirm: (ubicacion: any) => void }> = ({ visible, onCancel, onConfirm }) => {
     const [selectedUbicacion, setSelectedUbicacion] = useState(null);
-    
+
     const ubicacionesInicio = [
-      { nombre: 'Ambato', coordenadas: [-78.61234903335573, -1.2830400896671588] },
-      { nombre: 'Cevallos', coordenadas: [-78.633441, -1.360463] }
+        { nombre: 'Ambato', coordenadas: [-78.61234903335573, -1.2830400896671588] },
+        { nombre: 'Cevallos', coordenadas: [-78.633441, -1.360463] }
     ];
-  
+
     return (
-      <Modal
-        title="Seleccionar punto de inicio"
-        open={visible}
-        onCancel={onCancel}
-        footer={[
-          <Button key="cancel" onClick={onCancel}>Cancelar</Button>,
-          <Button
-            key="confirm"
-            type="primary"
-            onClick={() => onConfirm(selectedUbicacion)}
-            disabled={!selectedUbicacion}
-          >
-            Confirmar
-          </Button>
-        ]}
-      >
-        <Select
-          placeholder="Seleccione ubicación inicial"
-          style={{ width: '100%' }}
-          onChange={value => setSelectedUbicacion(JSON.parse(value))}
-          options={ubicacionesInicio.map(ubicacion => ({
-            value: JSON.stringify(ubicacion.coordenadas),
-            label: ubicacion.nombre,
-          }))}
-        />
-      </Modal>
+        <Modal
+            title="Seleccionar punto de inicio"
+            open={visible}
+            onCancel={onCancel}
+            footer={[
+                <Button key="cancel" onClick={onCancel}>Cancelar</Button>,
+                <Button
+                    key="confirm"
+                    type="primary"
+                    onClick={() => onConfirm(selectedUbicacion)}
+                    disabled={!selectedUbicacion}
+                >
+                    Confirmar
+                </Button>
+            ]}
+        >
+            <Select
+                placeholder="Seleccione ubicación inicial"
+                style={{ width: '100%' }}
+                onChange={value => setSelectedUbicacion(JSON.parse(value))}
+                options={ubicacionesInicio.map(ubicacion => ({
+                    value: JSON.stringify(ubicacion.coordenadas),
+                    label: ubicacion.nombre,
+                }))}
+            />
+        </Modal>
     );
-  };
-const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
+};
+const OrdersTable: React.FC<{ orders: Pedido[], onRouteGenerated?: () => void; }> = ({ orders, onRouteGenerated }) => {
     const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
     const [productSummary, setProductSummary] = useState<{ [key: string]: number }>({});
     const [filters, setFilters] = useState<FiltroProvinciaFecha[]>([]);
@@ -63,13 +63,13 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
     const [dateRange, setDateRange] = useState<string[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
 
-  // Función para convertir minutos a formato HH:MM:SS
-  const convertMinutesToTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = Math.floor(minutes % 60);
-    const seconds = Math.floor((minutes * 60) % 60);
-    return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  };
+    // Función para convertir minutos a formato HH:MM:SS
+    const convertMinutesToTime = (minutes: number) => {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = Math.floor(minutes % 60);
+        const seconds = Math.floor((minutes * 60) % 60);
+        return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
     // Procesar pedidos con datos calculados
     const processedOrders = orders
         .filter(order => !['CANCELADO', 'COMPLETADO'].includes(order.estado))
@@ -82,55 +82,57 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
                 0
             )
         }));
-        const handleConfirmRouteStart = async (startPoint: number[]) => {
-            setModalVisible(false);
-            
-            try {
-              // 1. Optimizar la ruta
-              console.log(orders)
-              const ubicaciones = orders
+    const handleConfirmRouteStart = async (startPoint: number[]) => {
+        setModalVisible(false);
+
+        try {
+            // 1. Optimizar la ruta
+            console.log(orders)
+            const ubicaciones = orders
                 .filter(order => selectedOrders.includes(order.id_pedido.toString()))
                 .map(order => ({
-                  tracking_id: order.id_pedido,
-                  cluster: 0,
-                  lat: order.lat,
-                  lng: order.lon
+                    tracking_id: order.id_pedido,
+                    cluster: 0,
+                    lat: order.lat,
+                    lng: order.lon
                 }));
-        
-              const optimizacionData = {
+
+            const optimizacionData = {
                 coordenadasInicio: startPoint,
                 ubicaciones
-              };
-              console.log(optimizacionData)
-              const resultadoOptimizacion = await optimizarRuta(optimizacionData.coordenadasInicio, optimizacionData.ubicaciones);
-              
-              // 2. Crear la ruta
-              const rutaData = {
+            };
+            console.log(optimizacionData)
+            const resultadoOptimizacion = await optimizarRuta(optimizacionData.coordenadasInicio, optimizacionData.ubicaciones);
+
+            // 2. Crear la ruta
+            const rutaData = {
                 estado: "GENERADA",
                 distancia_total: resultadoOptimizacion.rutaOptimizada.mejorDistancia,
                 tiempo_estimado: convertMinutesToTime(resultadoOptimizacion.rutaOptimizada.mejorDuracion),
                 geojson: resultadoOptimizacion.rutaOptimizada.datosRuta
-              };
-        
-              const nuevaRuta = await crearRuta(rutaData);
-              
-              if (!nuevaRuta.exito) {
-                throw new Error('Error al crear la ruta');
-              }
+            };
 
-              // 3. Actualizar los pedidos
-              const updatePromises = orders
-                .filter(order => selectedOrders.includes(order.id_pedido.toString()))
-                .map(order => actualizarPedido(order.id_pedido, { id_ruta: nuevaRuta.ruta.id_ruta }));
-        
-              await Promise.all(updatePromises);
-              
-              message.success('Ruta generada y pedidos actualizados exitosamente!');
-              
-            } catch (error) {
-              message.error('Error al generar la ruta: ' + (error as Error).message);
+            const nuevaRuta = await crearRuta(rutaData);
+
+            if (!nuevaRuta.exito) {
+                throw new Error('Error al crear la ruta');
             }
-          };
+
+            // 3. Actualizar los pedidos
+
+            const updatePromises = orders
+                .filter(order => selectedOrders.includes(order.id_pedido.toString()))
+                .map(order => actualizarPedido(order.id_pedido, { id_ruta: nuevaRuta.ruta.id, estado: 'EN_RUTA' }));
+
+            await Promise.all(updatePromises);
+
+            message.success('Ruta generada y pedidos actualizados exitosamente!');
+            if (onRouteGenerated) onRouteGenerated();
+
+        } catch (error) {
+            message.error('Error al generar la ruta: ' + (error as Error).message);
+        }
+    };
     const handleDateChange: RangePickerProps['onChange'] = (_, dateStrings) => {
         setDateRange(dateStrings);
     };
@@ -177,7 +179,7 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
         setSelectedProvinces([]);
         setDateRange([]);
         setFilters([]);
-        
+
     };
 
     useEffect(() => {
@@ -206,12 +208,12 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
 
     const handleGenerateRoute = async () => {
         if (selectedOrders.length === 0) {
-          message.error('Seleccione al menos un pedido para generar la ruta');
-          return;
+            message.error('Seleccione al menos un pedido para generar la ruta');
+            return;
         }
         setModalVisible(true);
-      };
-      
+    };
+
 
     const renderProductSummary = () => (
         <div style={{ margin: '20px 0' }}>
@@ -264,6 +266,32 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
             render: (provincia: string) => <Tag color="geekblue">{provincia}</Tag>
         },
         {
+            title: 'Estado',
+            dataIndex: 'estado',
+            key: 'estado',
+            render: (estado: string) => {
+                let color = '';
+                switch (estado) {
+                    case 'PENDIENTE':
+                        color = 'orange';
+                        break;
+                    case 'EN_RUTA':
+                        color = 'blue';
+                        break;
+                    case 'COMPLETADO':
+                        color = 'green';
+                        break;
+                    case 'CANCELADO':
+                        color = 'red';
+                        break;
+                    default:
+                        color = 'gray';
+                }
+                return <Tag color={color}>{estado.replace(/_/g, ' ')}</Tag>;
+            },
+            sorter: (a: Pedido, b: Pedido) => a.estado.localeCompare(b.estado),
+        },
+        {
             title: 'Total',
             dataIndex: 'total',
             key: 'total',
@@ -290,116 +318,116 @@ const OrdersTable: React.FC<{ orders: Pedido[] }> = ({ orders }) => {
                 new Date(a.fecha_pedido).getTime() - new Date(b.fecha_pedido).getTime()
         }
     ];
-    
+
     return (
-    <div className="orders-table-container">
-        <ModalInicioRuta
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onConfirm={handleConfirmRouteStart}
-      />
-        {/* Sección de Filtros */}
-        <div className="filters-section">
-            <div className="filters-row">
-                <Select
-                    mode="multiple"
-                    placeholder="Filtrar por provincia"
-                    className="province-select"
-                    value={selectedProvinces}
-                    onChange={setSelectedProvinces}
-                    options={coordenadasProvincias.map(p => ({
-                        value: p.name,
-                        label: p.name
-                    }))}
-                />
+        <div className="orders-table-container">
+            <ModalInicioRuta
+                visible={modalVisible}
+                onCancel={() => setModalVisible(false)}
+                onConfirm={handleConfirmRouteStart}
+            />
+            {/* Sección de Filtros */}
+            <div className="filters-section">
+                <div className="filters-row">
+                    <Select
+                        mode="multiple"
+                        placeholder="Filtrar por provincia"
+                        className="province-select"
+                        value={selectedProvinces}
+                        onChange={setSelectedProvinces}
+                        options={coordenadasProvincias.map(p => ({
+                            value: p.name,
+                            label: p.name
+                        }))}
+                    />
 
-                <RangePicker
-                    className="date-picker"
-                    placeholder={['Fecha inicial', 'Fecha final']}
-                    format="YYYY-MM-DD"
-                    onChange={handleDateChange}
-                />
+                    <RangePicker
+                        className="date-picker"
+                        placeholder={['Fecha inicial', 'Fecha final']}
+                        format="YYYY-MM-DD"
+                        onChange={handleDateChange}
+                    />
 
-                <Space>
-                    <Button
-                        type="primary"
-                        icon={<SearchOutlined />}
-                        onClick={addFilter}
-                        className="filter-button"
-                    >
-                        Filtrar
-                    </Button>
-                    <Button
-                        onClick={clearFilters}
-                        icon={<CloseOutlined />}
-                        className="filter-button"
-                    >
-                        Limpiar
-                    </Button>
-                </Space>
+                    <Space>
+                        <Button
+                            type="primary"
+                            icon={<SearchOutlined />}
+                            onClick={addFilter}
+                            className="filter-button"
+                        >
+                            Filtrar
+                        </Button>
+                        <Button
+                            onClick={clearFilters}
+                            icon={<CloseOutlined />}
+                            className="filter-button"
+                        >
+                            Limpiar
+                        </Button>
+                    </Space>
+                </div>
+
+                {/* Tags de Filtros Aplicados */}
+                <div className="filter-tag-container">
+                    {filters.map((filter, index) => (
+                        <Tag
+                            key={index}
+                            closable
+                            onClose={() => removeFilter(index)}
+                            className="filter-tag"
+                        >
+                            {filter.tipo === 'provincia'
+                                ? `Provincia: ${filter.valor}`
+                                : `Fecha: ${(filter.valor as string[]).join(' -> ')}`}
+                        </Tag>
+                    ))}
+                </div>
             </div>
 
-            {/* Tags de Filtros Aplicados */}
-            <div className="filter-tag-container">
-                {filters.map((filter, index) => (
-                    <Tag
-                        key={index}
-                        closable
-                        onClose={() => removeFilter(index)}
-                        className="filter-tag"
-                    >
-                        {filter.tipo === 'provincia'
-                            ? `Provincia: ${filter.valor}`
-                            : `Fecha: ${(filter.valor as string[]).join(' -> ')}`}
-                    </Tag>
-                ))}
+            {/* Sección de Acciones y Resumen */}
+            <div className="actions-summary-section">
+                <Button
+                    type="primary"
+                    onClick={handleGenerateRoute}
+                    icon={<SearchOutlined />}
+                    className="generate-route-button"
+                >
+                    Generar Ruta Óptima
+                </Button>
+
+                <div className="product-summary-container">
+                    {renderProductSummary()}
+                </div>
             </div>
-        </div>
 
-        {/* Sección de Acciones y Resumen */}
-        <div className="actions-summary-section">
-            <Button
-                type="primary"
-                onClick={handleGenerateRoute}
-                icon={<SearchOutlined />}
-                className="generate-route-button"
-            >
-                Generar Ruta Óptima
-            </Button>
-
-            <div className="product-summary-container">
-                {renderProductSummary()}
-            </div>
-        </div>
-
-        {/* Tabla */}
-        <Table
-            className="responsive-table"
-            dataSource={handleSearch()}
-            columns={columns}
-            rowSelection={rowSelection}
-            pagination={{ pageSize: 6 }}
-            scroll={{ x: 1200 }}
-            rowKey="id_pedido"
-            expandable={{
-                expandedRowRender: (record: Pedido) => (
-                    <div className="articles-section">
-                        <h4>Artículos</h4>
-                        {(record.detalles || []).map((detalle: DetallePedido) => (
-                            <div key={detalle.id_detalle} className="article-item">
-                                <Tag color="geekblue">{detalle.nombre_articulo}</Tag>
-                                <div className="article-details">
-                                    <span>Cantidad: {detalle.cantidad} </span>
-                                    <span>Precio unitario: ${(detalle.precio_unitario || 0).toFixed(2)}</span>
+            {/* Tabla */}
+            <Table
+                className="responsive-table"
+                dataSource={handleSearch()}
+                columns={columns}
+                rowSelection={rowSelection}
+                pagination={{ pageSize: 6 }}
+                scroll={{ x: 1200 }}
+                rowKey="id_pedido"
+                expandable={{
+                    expandedRowRender: (record: Pedido) => (
+                        <div className="articles-section">
+                            <h4>Artículos</h4>
+                            {(record.detalles || []).map((detalle: DetallePedido) => (
+                                <div key={detalle.id_detalle} className="article-item">
+                                    <Tag color="geekblue">{detalle.nombre_articulo}</Tag>
+                                    <div className="article-details">
+                                        <span>Cantidad: {detalle.cantidad} </span>
+                                        <span>Precio unitario: ${(detalle.precio_unitario || 0).toFixed(2)}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                )
-            }}
-        />
-    </div>
-);
+                            ))}
+                        </div>
+                    )
+                }}
+            />
+        </div>
+    );
 };
 
 export default OrdersTable;

@@ -11,6 +11,13 @@ import { MappedDetalle, MappedOrder, Pedido } from '../../interfaces/interfaces'
 const Rutas = () => {
   const [showRoutesView, setShowRoutesView] = useState(false);
   const [orders, setOrders] = useState<Pedido[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0); // Nuevo estado para forzar actualización
+
+  // Añadir esta función para actualizar la visualización
+  const handleRouteGenerated = () => {
+    setShowRoutesView(true);
+    setRefreshKey(prev => prev + 1); // Forzar recarga de VisualizacionRutas
+  };
 
   // Cargar pedidos desde la API
   useEffect(() => {
@@ -90,13 +97,13 @@ const Rutas = () => {
         </header>
 
         <main className="routes-content">
-          {!showRoutesView ? (
+        {!showRoutesView ? (
             <div className="table-container">
-              <OrdersTable orders={orders} />
+              <OrdersTable orders={orders} onRouteGenerated={handleRouteGenerated} />
             </div>
           ) : (
             <div className="routes-visualization">
-              <VisualizacionRutas orders={mappedOrders} />
+              <VisualizacionRutas key={refreshKey} orders={mappedOrders} />
             </div>
           )}
         </main>

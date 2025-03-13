@@ -93,3 +93,22 @@ export interface MappedDetalle {
   precio: number;
   total: number;
 }
+
+export interface RutaOptimizada {
+  id_ruta: string;
+  estado: string;
+  distancia_total: number;
+  tiempo_estimado: string;
+  geojson: any;
+  pedidos: any[];
+  fecha_creacion: string;
+}
+
+export interface RouteActionsProps {
+  selectedRoute?: string;
+  onStatusChange: (nuevoEstado: string) => Promise<void>;
+}
+
+export interface RouteInfoProps {
+  ruta?: Ruta;
+}
