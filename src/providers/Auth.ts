@@ -1,5 +1,5 @@
 import { AuthProvider } from "@refinedev/core";
-import { API_URL, dataProvider } from "./data";
+import { API_URL } from "./data";
 import axios from "../config/axios";
 
 export const authProvider: AuthProvider = {
