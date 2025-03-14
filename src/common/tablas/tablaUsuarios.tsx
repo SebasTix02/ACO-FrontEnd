@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space, Input, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Usuario } from '../../interfaces/interfaces';
-import ModalEditarUsuario from '../modal/modal_editar_usuario';
-import ModalEliminarUsuario from '../modal/modal_eliminar_usuario';
-import ModalAgregarUsuario from '../modal/modal_agregar_usuario';
+import ModalEditarUsuario from '../modales/modal_editar_usuario';
+import ModalEliminarUsuario from '../modales/modal_eliminar_usuario';
+import ModalAgregarUsuario from '../modales/modal_agregar_usuario';
 import "./tablaVerPedidos.css";
 
 const TablaUsuarios: React.FC<{

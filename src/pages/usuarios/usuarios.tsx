@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../components/layout';
 import { Button, Space, Row, notification, message } from 'antd';
-import TablaUsuarios from '../../common/table/tablaUsuarios';
+import TablaUsuarios from '../../common/tablas/tablaUsuarios';
 import { Usuario } from '../../interfaces/interfaces';
 import { listarUsuarios } from '../../providers/options/usuarios';
 

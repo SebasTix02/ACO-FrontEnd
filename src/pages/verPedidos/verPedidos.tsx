@@ -1,8 +1,8 @@
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../components/layout';
-import TablaVerPedidos from '../../common/table/tablaVerPedidos';
+import TablaVerPedidos from '../../common/tablas/tablaVerPedidos';
 import { useState, useEffect } from 'react';
-import ModalIngresarPedido from '../../common/modal/modal_ingresar_pedido';
+import ModalIngresarPedido from '../../common/modales/modal_ingresar_pedido';
 import { Modal } from 'antd';
 import { listarPedidos } from '../../providers/options/pedidos';
 

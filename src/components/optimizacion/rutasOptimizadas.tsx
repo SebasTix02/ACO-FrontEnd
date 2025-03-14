@@ -5,7 +5,7 @@ import { actualizarEstadoPedidos } from '../../providers/options/rutas';
 import { RutaOptimizada } from '../../interfaces/interfaces';
 import './rutasOptimizadas.css';
 import MapaRutas from './mapaRutas';
-import ModalRutas from '../../common/modal/modal_optimizar_rutas';
+import ModalRutas from '../../common/modales/modal_optimizar_rutas';
 
 const { Option } = Select;
 

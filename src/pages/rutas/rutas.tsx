@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../../components/layout';
 import { Button } from 'antd';
-import OrdersTable from '../../common/table/tabla_pedidos';
+import OrdersTable from '../../common/tablas/tabla_pedidos';
 import './rutas.css';
 import VisualizacionRutas from '../../components/optimizacion/rutasOptimizadas';
 import { listarPedidos } from '../../providers/options/pedidos';

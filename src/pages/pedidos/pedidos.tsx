@@ -4,8 +4,7 @@ import { useState,  } from "react";
 import {  FileAddOutlined, CarOutlined, OrderedListOutlined} from '@ant-design/icons';
 import "../options.css"
 import { useNavigate } from "react-router-dom";
-import ModalIngresarPedido from "../../common/modal/modal_ingresar_pedido";
-import "../../common/modal/mapa.css";
+import ModalIngresarPedido from "../../common/modales/modal_ingresar_pedido";
 
 export const Pedidos = () => {
     const navigate = useNavigate()
