@@ -5,13 +5,11 @@ import axios from "../config/axios";
 export const authProvider: AuthProvider = {
   login: async ({ email, password }) => {
     try {
-      // Cambiar a solicitud directa con axios para manejar cookies
       await axios.post(
         `${API_URL}/auth/login`,
         { email, password },
         { withCredentials: true }
       );
-
       return {
         success: true,
         redirectTo: "/",
@@ -21,26 +19,30 @@ export const authProvider: AuthProvider = {
       return {
         success: false,
         error: {
-          message: "message" in error ? error.message : "Login failed",
-          name: "name" in error ? error.name : "Invalid email or password",
+          message: error.message || "Login failed",
+          name: error.name || "Invalid email or password",
         },
       };
     }
   },
 
   logout: async () => {
+    console.log("Logging out...");
     try {
       await axios.post(
         `${API_URL}/auth/logout`,
         {},
         { withCredentials: true }
       );
-    } finally {
-      return {
-        success: true,
-        redirectTo: "/login",
-      };
+    } catch (error) {
+      console.error("Error during logout", error);
     }
+    // Forzamos redirección y recarga para limpiar el estado de la app
+    window.location.href = "/login";
+    window.location.reload();
+    return {
+      success: true,
+    };
   },
 
   onError: async (error) => {
@@ -54,13 +56,10 @@ export const authProvider: AuthProvider = {
 
   check: async () => {
     try {
-      // Verificar sesión usando el endpoint del backend
       await axios.get(`${API_URL}/auth/check-session`, {
         withCredentials: true,
       });
-      return {
-        authenticated: true,
-      };
+      return { authenticated: true };
     } catch (error) {
       return {
         authenticated: false,
@@ -71,13 +70,12 @@ export const authProvider: AuthProvider = {
 
   getIdentity: async () => {
     try {
-      // Obtener datos del usuario desde el backend
       const response = await axios.get(`${API_URL}/auth/check-session`, {
         withCredentials: true,
       });
-      return response.data;
+      return response.data || null;
     } catch (error) {
-      return undefined;
+      return null;
     }
   },
 };

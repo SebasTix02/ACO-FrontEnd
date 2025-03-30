@@ -1,34 +1,48 @@
-import graphqlDataProvider, { GraphQLClient
-    , liveProvider as graphqlLiveProvider
- } from "@refinedev/nestjs-query";
+import { DataProvider } from "@refinedev/core";
 import { fetchWrapper } from "./fetch-wrapper";
-import {createClient} from "graphql-ws"
+
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const API_URL = `${API_BASE_URL}/api`;
 
-export const WS_URL = 'wss://api.crm.refine.dev/graphql'
-export const client = new GraphQLClient(API_URL, {
-    fetch:(url:string, options:RequestInit)=>{
-        try {
-            return fetchWrapper(url, options);
-        } catch (error) {
-            return Promise.reject(error as Error);
-        }
-    }
-})
+export const dataProvider: DataProvider = {
+  getList: async ({ resource, pagination, sorters, filters, meta }) => {
+    const response = await fetchWrapper(`${API_URL}/${resource}`, { method: "GET" });
+    const data = await response.json();
+    return { data, total: data.length };
+  },
+  
+  getOne: async ({ resource, id, meta }) => {
+    const response = await fetchWrapper(`${API_URL}/${resource}/${id}`, { method: "GET" });
+    const data = await response.json();
+    return { data };
+  },
 
-export const wsClient = typeof window !== "undefined"
-    ? createClient({
-        url: WS_URL,
-        connectionParams: () => {
-            const accessToken = localStorage.getItem("access_token")
-            return{
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            }
-        },
-    }) : undefined
+  create: async ({ resource, variables }) => {
+    const response = await fetchWrapper(`${API_URL}/${resource}`, {
+      method: "POST",
+      body: JSON.stringify(variables)
+    });
+    const data = await response.json();
+    return { data };
+  },
 
-export const dataProvider = graphqlDataProvider(client)
-export const liveProvider = wsClient ? graphqlLiveProvider(wsClient) : undefined;
+  update: async ({ resource, id, variables }) => {
+    const response = await fetchWrapper(`${API_URL}/${resource}/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(variables)
+    });
+    const data = await response.json();
+    return { data };
+  },
+
+  deleteOne: async ({ resource, id, variables }) => {
+    const response = await fetchWrapper(`${API_URL}/${resource}/${id}`, {
+      method: "DELETE"
+    });
+    const data = await response.json();
+    return { data };
+  },
+
+  getApiUrl: () => API_URL,
+
+};

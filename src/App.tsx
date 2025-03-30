@@ -14,6 +14,7 @@ import { App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router-dom";
 import { Login, Register, Home, ListaUsuarios, Inventario } from "./pages";
 import { resources } from "./config/resources";
+import Layout from "./components/layout";
 import { Pedidos } from "./pages/pedidos/pedidos";
 import Rutas from "./pages/rutas/rutas";
 import { VerPedidos } from "./pages/verPedidos/verPedidos";
@@ -56,7 +57,6 @@ const ProtectedApp = () => {
           authProvider={{
             ...authProvider,
             check: async () => {
-              // Si ya tienes la información del usuario en el contexto, no es necesario refrescarlo
               if (user) {
                 return { authenticated: true };
               }
