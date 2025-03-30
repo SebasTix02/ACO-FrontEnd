@@ -14,7 +14,6 @@ const UsuarioActual = () => {
 
     const handleLogout = async () => {
         setIsOpen(false);
-        
         try {
             await logoutUser(); // Usar función de logout
             // Redirigir y forzar recarga para limpiar estado

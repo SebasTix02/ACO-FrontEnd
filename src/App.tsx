@@ -12,9 +12,7 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import { App as AntdApp } from "antd";
 import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router-dom";
-
 import { Login, Register, Home, ListaUsuarios, Inventario } from "./pages";
-import Layout from "./components/layout";
 import { resources } from "./config/resources";
 import { Pedidos } from "./pages/pedidos/pedidos";
 import Rutas from "./pages/rutas/rutas";
@@ -45,10 +43,9 @@ const ProtectedApp = () => {
     user?.privilegios === "basico"
       ? resources.filter((resource) => resource.name === "pedidos")
       : resources;
-
+  
   // Determinar si el usuario es básico
   const isBasicUser = user?.privilegios === "basico";
-
   return (
     <AntdApp>
       <DevtoolsProvider>
@@ -59,10 +56,15 @@ const ProtectedApp = () => {
           authProvider={{
             ...authProvider,
             check: async () => {
-              await refreshUser(); // ✅ Actualiza el usuario cada vez que se chequea la autenticación
+              // Si ya tienes la información del usuario en el contexto, no es necesario refrescarlo
+              if (user) {
+                return { authenticated: true };
+              }
+              await refreshUser();
               return user ? { authenticated: true } : { authenticated: false };
             },
           }}
+          
           resources={filteredResources}
           options={{
             syncWithLocation: true,
