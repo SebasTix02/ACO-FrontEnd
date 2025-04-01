@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Spin, Select, DatePicker, Row, Col, Statistic, notification, List, Typography } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { getKPIsMensuales } from '../../providers/options/dashboard';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -26,8 +27,8 @@ const KPIsMensuales: React.FC<KPIsMensualesProps> = ({ ciudades }) => {
     top_productos?: TopProducto[];
   } | null>(null);
   
-  const [año, setAño] = useState<number>(new Date().getFullYear());
-  const [mes, setMes] = useState<number>(new Date().getMonth() + 1);
+  const [año, setAño] = useState<number>(dayjs().year());
+  const [mes, setMes] = useState<number>(dayjs().month() + 1);
   const [ciudad, setCiudad] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const KPIsMensuales: React.FC<KPIsMensualesProps> = ({ ciudades }) => {
     }
   };
 
-  const handleMesChange = (date: any) => {
+  const handleMesChange = (date: dayjs.Dayjs | null) => {
     if (date) {
       setMes(date.month() + 1);
       setAño(date.year());
@@ -76,7 +77,7 @@ const KPIsMensuales: React.FC<KPIsMensualesProps> = ({ ciudades }) => {
             format="MM/YYYY"
             style={{ width: '100%' }}
             onChange={handleMesChange}
-            defaultValue={new Date()}
+            defaultValue={dayjs()}
           />
         </Col>
         <Col span={12}>
