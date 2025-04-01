@@ -4,7 +4,9 @@ import { getPicosDemanda } from '../../providers/options/dashboard';
 import { Column } from '@ant-design/plots';
 
 const { Option } = Select;
-
+interface PicosDemandaProps {
+  ciudades: Ciudad[];
+}
 interface Ciudad {
   nombre: string;
   codigo: number;
@@ -39,7 +41,7 @@ const ciudades: Ciudad[] = [
   { nombre: 'PELILEO', codigo: 9 },
 ];
 
-const PicosDemanda: React.FC = () => {
+const PicosDemanda: React.FC<PicosDemandaProps> = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [picosData, setPicosData] = useState<PicoDemanda[]>([]);
   const [año, setAño] = useState<number>(new Date().getFullYear());

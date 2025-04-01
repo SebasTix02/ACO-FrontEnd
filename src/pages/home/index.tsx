@@ -9,13 +9,36 @@ import DistribucionVentas from '../../components/home/DistribucionVentas';
 import PatronesConsumo from '../../components/home/PatronesConsumo';
 import PicosDemanda from '../../components/home/PicosDemanda';
 
-
 const { Title } = Typography;
+
+interface Ciudad {
+  nombre: string;
+  codigo: number;
+}
+
+const ciudadesLista: Ciudad[] = [
+  { nombre: 'AMBATO', codigo: 1 },
+  { nombre: 'PILLARO', codigo: 10 },
+  { nombre: 'PINGUILI', codigo: 11 },
+  { nombre: 'PUJILI', codigo: 12 },
+  { nombre: 'QUITO', codigo: 13 },
+  { nombre: 'RIOBAMBA', codigo: 14 },
+  { nombre: 'SALCEDO', codigo: 15 },
+  { nombre: 'SAQUISILÍ', codigo: 16 },
+  { nombre: 'CHILLANES', codigo: 2 },
+  { nombre: 'COLTA', codigo: 3 },
+  { nombre: 'DURÁN', codigo: 4 },
+  { nombre: 'GUAMOTE', codigo: 5 },
+  { nombre: 'GUARANDA', codigo: 6 },
+  { nombre: 'LATACUNGA', codigo: 7 },
+  { nombre: 'MOCHA', codigo: 8 },
+  { nombre: 'PELILEO', codigo: 9 },
+];
 
 export const Home: React.FC = () => {
   const [data, setData] = useState<any>({});
   const [isLoading, setLoading] = useState(true);
-  const [ciudades, setCiudades] = useState<string[]>([]);
+  const [ciudades] = useState<Ciudad[]>(ciudadesLista);
   const [productos, setProductos] = useState<string[]>([]);
 
   useEffect(() => {
@@ -27,7 +50,6 @@ export const Home: React.FC = () => {
       const result = await getDashboardValues();
       if (result.success) {
         setData(result.dashboard);
-        setCiudades(result.dashboard.ciudades || []);
         setProductos(result.dashboard.productos || []);
       } else {
         notification.error({
@@ -111,7 +133,7 @@ export const Home: React.FC = () => {
             <PatronesConsumo productos={productos} />
           </Col>
           <Col xs={24} lg={12}>
-            <PicosDemanda />
+            <PicosDemanda ciudades={ciudades} />
           </Col>
         </Row>
       </div>
