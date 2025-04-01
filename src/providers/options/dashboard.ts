@@ -72,13 +72,13 @@ export const getPatronesConsumo = async (filtros: {
 export const getPicosDemanda = async (año: number, ciudad: string) => {
   try {
     const respuesta = await axios.post(`${API_URL}/dashboard/picosDemanda`, {
-      año,
+      anio: año,
       codCiudad: ciudad
     }, { withCredentials: true });
     
     return {
       exito: true,
-      data: respuesta.data.data
+      data: respuesta.data
     };
   } catch (error: any) {
     return {
