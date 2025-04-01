@@ -8,6 +8,8 @@ import KPIsMensuales from '../../components/home/KPIsMensuales';
 import DistribucionVentas from '../../components/home/DistribucionVentas';
 import PatronesConsumo from '../../components/home/PatronesConsumo';
 import PicosDemanda from '../../components/home/PicosDemanda';
+import { listarArticulos } from '../../providers/options/articulos';
+import { Articulo } from '../../interfaces/interfaces';
 
 const { Title } = Typography;
 
@@ -39,7 +41,7 @@ export const Home: React.FC = () => {
   const [data, setData] = useState<any>({});
   const [isLoading, setLoading] = useState(true);
   const [ciudades] = useState<Ciudad[]>(ciudadesLista);
-  const [productos, setProductos] = useState<string[]>([]);
+  const [productos, setProductos] = useState<Articulo[]>([]);
 
   useEffect(() => {
     fetchDashboardData();
@@ -50,13 +52,19 @@ export const Home: React.FC = () => {
       const result = await getDashboardValues();
       if (result.success) {
         setData(result.dashboard);
-        setProductos(result.dashboard.productos || []);
       } else {
         notification.error({
           message: 'Error de obtención de datos',
           description: `No se pudo obtener los valores del Dashboard: ${result.error?.message ?? 'Error desconocido'}`
         });
       }
+      const cargarArticulos = async () => {
+        const response = await listarArticulos();
+        if(response.exito) {
+          setProductos(response.articulos);
+        }
+      };
+      cargarArticulos();
     } catch (error) {
       console.error(error);
       notification.error({

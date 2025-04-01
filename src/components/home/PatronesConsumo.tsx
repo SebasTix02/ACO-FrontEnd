@@ -3,12 +3,13 @@ import { Card, Spin, Select, DatePicker, Row, Col, notification } from 'antd';
 import dayjs from 'dayjs'; // Importamos dayjs en lugar de moment
 import { getPatronesConsumo } from '../../providers/options/dashboard';
 import { Line } from '@ant-design/plots';
+import { Articulo } from '../../interfaces/interfaces';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 interface PatronesConsumoProps {
-  productos: string[];
+   productos: Articulo[];
 }
 
 const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
@@ -106,7 +107,7 @@ const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
             onChange={(value) => setProducto(value)}
           >
             {productos.map((producto) => (
-              <Option key={producto} value={producto}>{producto}</Option>
+              <Option key={producto.cod_art} value={producto}>{producto.nombre_art}</Option>
             ))}
           </Select>
         </Col>
