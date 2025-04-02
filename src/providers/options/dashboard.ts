@@ -87,20 +87,17 @@ export const getPicosDemanda = async (año: number, ciudad: string) => {
     };
   }
 };
-export const getDashboardValues = async () => {
-    try {
-        const response = await axios.get(`${API_DASHBOARD}`);
-        const data = response.data
-        return {
-            success: true,
-            dashboard: data,
-        };
-    } catch (error:any) {
-        return {
-            success: false,
-            error: {
-                message: error.response ? error.response.data.error : 'Sin respuesta desde el servidor Back-end.',
-            },
-        };
-    }
+export const getEstadisticasGenerales = async () => {
+  try {
+    const respuesta = await axios.get(`${API_DASHBOARD}`, { withCredentials: true });
+    return {
+      exito: true,
+      data: respuesta.data,
+    };
+  } catch (error: any) {
+    return {
+      exito: false,
+      error: error.response?.data?.error || 'Sin respuesta desde el servidor Back-end.',
+    };
+  }
 };

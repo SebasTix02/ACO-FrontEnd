@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, notification, Typography, Spin, Divider } from 'antd';
+import { Row, Col, notification, Typography, Spin, Divider, Tag } from 'antd';
 import Layout from "../../components/layout";
-import { getDashboardValues } from '../../providers/options/dashboard';
-import { DollarOutlined, PercentageOutlined, ShoppingCartOutlined, ShoppingOutlined, TeamOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, BarChartOutlined, DollarOutlined, PercentageOutlined, RiseOutlined, ShoppingCartOutlined, ShoppingOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import DashboardCards from '../../components/home/DashboardCards';
 import KPIsMensuales from '../../components/home/KPIsMensuales';
 import DistribucionVentas from '../../components/home/DistribucionVentas';
@@ -10,6 +9,7 @@ import PatronesConsumo from '../../components/home/PatronesConsumo';
 import PicosDemanda from '../../components/home/PicosDemanda';
 import { listarArticulos } from '../../providers/options/articulos';
 import { Articulo } from '../../interfaces/interfaces';
+import { getEstadisticasGenerales } from '../../providers/options/dashboard';
 
 const { Title } = Typography;
 
@@ -38,7 +38,7 @@ const ciudadesLista: Ciudad[] = [
 ];
 
 export const Home: React.FC = () => {
-  const [data, setData] = useState<any>({});
+  const [dataDashboard, setDataDashboard] = useState<any>({});
   const [isLoading, setLoading] = useState(true);
   const [ciudades] = useState<Ciudad[]>(ciudadesLista);
   const [productos, setProductos] = useState<Articulo[]>([]);
@@ -49,22 +49,25 @@ export const Home: React.FC = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const result = await getDashboardValues();
-      if (result.success) {
-        setData(result.dashboard);
+      const result = await getEstadisticasGenerales();
+      if (result.exito) {
+        setDataDashboard(result.data.data);
+        console.log(dataDashboard);
       } else {
         notification.error({
           message: 'Error de obtención de datos',
-          description: `No se pudo obtener los valores del Dashboard: ${result.error?.message ?? 'Error desconocido'}`
+          description: result.error || 'Error desconocido'
         });
       }
+      
       const cargarArticulos = async () => {
         const response = await listarArticulos();
         if(response.exito) {
           setProductos(response.articulos);
         }
       };
-      cargarArticulos();
+      await cargarArticulos();
+      
     } catch (error) {
       console.error(error);
       notification.error({
@@ -78,37 +81,46 @@ export const Home: React.FC = () => {
 
   const cards = [
     {
-      nombre: data.ventasTotales?.title || 'Ventas Totales',
-      icono: <ShoppingOutlined />,
-      total: data.ventasTotales?.values || 0,
-      crecimiento: data.ventasTotales?.crecimiento
+      title: 'Ventas Totales',
+      icon: <BarChartOutlined style={{ fontSize: 24 }} />,
+      value: dataDashboard.ventas_totales || 0,
+      format: (value: number) =>
+        `$${value.toLocaleString('es-ES', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
+        style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
     },
     {
-      nombre: data.clientesActivos?.title || 'Clientes Activos',
-      icono: <TeamOutlined />,
-      total: data.clientesActivos?.values || 0,
-      crecimiento: data.clientesActivos?.crecimiento
+      title: 'Clientes Activos',
+      icon: <UserOutlined style={{ fontSize: 24 }} />,
+      value: dataDashboard.clientes_activos || 0,
+      format: (value: number) => value.toLocaleString('es-ES'),
+      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
     },
     {
-      nombre: data.ticketPromedio?.title || 'Ticket Promedio',
-      icono: <DollarOutlined />,
-      total: data.ticketPromedio?.values || 0,
-      crecimiento: data.ticketPromedio?.crecimiento
+      title: 'Productos Vendidos',
+      icon: <ShoppingCartOutlined style={{ fontSize: 24 }} />,
+      value: dataDashboard.productos_vendidos || 0,
+      format: (value: number) => value.toLocaleString('es-ES'),
+      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
     },
     {
-      nombre: data.productosVendidos?.title || 'Productos Vendidos',
-      icono: <ShoppingCartOutlined />,
-      total: data.productosVendidos?.values || 0,
-      crecimiento: data.productosVendidos?.crecimiento
+      title: 'Unidades Vendidas',
+      icon: <AppstoreOutlined style={{ fontSize: 24 }} />,
+      value: dataDashboard.unidades_vendidas || 0,
+      format: (value: number) => value.toLocaleString('es-ES'),
+      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
     },
     {
-      nombre: data.tasaConversion?.title || 'Tasa de Conversión',
-      icono: <PercentageOutlined />,
-      total: data.tasaConversion?.values || 0,
-      crecimiento: data.tasaConversion?.crecimiento
-    }
+      title: 'Producto Estrella',
+      icon: <RiseOutlined style={{ fontSize: 24 }} />,
+      value: dataDashboard.producto_mas_vendido || 'N/A',
+      
+      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
+    },
   ];
-
+  
   if (isLoading) {
     return (
       <Layout>
