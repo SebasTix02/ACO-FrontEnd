@@ -39,7 +39,6 @@ const DistribucionVentas: React.FC<DistribucionVentasProps> = ({ productos }) =>
     setLoading(true);
     try {
       const response = await getDistribucionVentas(año, producto);
-      console.log('Response DistribucionVentas:', response);
       
       if (response.exito) {
         setDistribucionData(response.data);
