@@ -10,27 +10,9 @@ import PicosDemanda from '../../components/home/PicosDemanda';
 import { listarArticulos } from '../../providers/options/articulos';
 import { Articulo, Ciudad } from '../../interfaces/interfaces';
 import { getEstadisticasGenerales } from '../../providers/options/dashboard';
+import { ciudadesLista } from '../../constants';
 
 const { Title } = Typography;
-
-const ciudadesLista: Ciudad[] = [
-  { nombre: 'AMBATO', codigo: 1 },
-  { nombre: 'PILLARO', codigo: 10 },
-  { nombre: 'PINGUILI', codigo: 11 },
-  { nombre: 'PUJILI', codigo: 12 },
-  { nombre: 'QUITO', codigo: 13 },
-  { nombre: 'RIOBAMBA', codigo: 14 },
-  { nombre: 'SALCEDO', codigo: 15 },
-  { nombre: 'SAQUISILÍ', codigo: 16 },
-  { nombre: 'CHILLANES', codigo: 2 },
-  { nombre: 'COLTA', codigo: 3 },
-  { nombre: 'DURÁN', codigo: 4 },
-  { nombre: 'GUAMOTE', codigo: 5 },
-  { nombre: 'GUARANDA', codigo: 6 },
-  { nombre: 'LATACUNGA', codigo: 7 },
-  { nombre: 'MOCHA', codigo: 8 },
-  { nombre: 'PELILEO', codigo: 9 },
-];
 
 export const Home: React.FC = () => {
   const [dataDashboard, setDataDashboard] = useState<any>({});

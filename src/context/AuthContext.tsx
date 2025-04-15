@@ -6,7 +6,7 @@ type AuthContextType = {
   user: any;
   loading: boolean;
   logout: () => Promise<void>;
-  refreshUser: () => Promise<void>; // ✅ Nueva función para forzar actualización
+  refreshUser: (force?: boolean) => Promise<void>; // ✅ Nueva función para forzar actualización
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -14,28 +14,39 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [sessionInvalid, setSessionInvalid] = useState(false); // NUEVO
+  useEffect(() => {
+    refreshUser();
+  }, []);
   const navigate = useNavigate();
 
   // Función para actualizar el usuario
-  const verifySession = async () => {
+  const verifySession = async (force = false) => {
+    if (sessionInvalid && !force) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const result = await checkSession();
       if (result.success) {
         setUser(result.user);
+        setSessionInvalid(false);
       } else {
         setUser(null);
+        setSessionInvalid(true);
       }
     } catch (error) {
       setUser(null);
+      setSessionInvalid(true);
     } finally {
       setLoading(false);
     }
   };
-
+  
   // Nueva función para forzar actualización manual
-  const refreshUser = async () => {
-    await verifySession();
+  const refreshUser = async (force = false) => {
+    await verifySession(force);
   };
 
   useEffect(() => {
