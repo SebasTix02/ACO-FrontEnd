@@ -8,15 +8,10 @@ import DistribucionVentas from '../../components/home/DistribucionVentas';
 import PatronesConsumo from '../../components/home/PatronesConsumo';
 import PicosDemanda from '../../components/home/PicosDemanda';
 import { listarArticulos } from '../../providers/options/articulos';
-import { Articulo } from '../../interfaces/interfaces';
+import { Articulo, Ciudad } from '../../interfaces/interfaces';
 import { getEstadisticasGenerales } from '../../providers/options/dashboard';
 
 const { Title } = Typography;
-
-interface Ciudad {
-  nombre: string;
-  codigo: number;
-}
 
 const ciudadesLista: Ciudad[] = [
   { nombre: 'AMBATO', codigo: 1 },
@@ -89,35 +84,35 @@ export const Home: React.FC = () => {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`,
-        style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
+        style: { background: '#fff' },
     },
     {
       title: 'Clientes Activos',
       icon: <UserOutlined style={{ fontSize: 24 }} />,
       value: dataDashboard.clientes_activos || 0,
       format: (value: number) => value.toLocaleString('es-ES'),
-      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
+      style: { background: '#fff' },
     },
     {
       title: 'Productos Vendidos',
       icon: <ShoppingCartOutlined style={{ fontSize: 24 }} />,
       value: dataDashboard.productos_vendidos || 0,
       format: (value: number) => value.toLocaleString('es-ES'),
-      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
+      style: { background: '#fff' },
     },
     {
-      title: 'Unidades Vendidas',
+      title: 'Unidades Vendidas Producto Estrella',
       icon: <AppstoreOutlined style={{ fontSize: 24 }} />,
       value: dataDashboard.unidades_vendidas || 0,
       format: (value: number) => value.toLocaleString('es-ES'),
-      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
+      style: { background: '#fff' },
     },
     {
       title: 'Producto Estrella',
       icon: <RiseOutlined style={{ fontSize: 24 }} />,
       value: dataDashboard.producto_mas_vendido || 'N/A',
       
-      style: { background: 'linear-gradient(135deg,rgb(207, 235, 249) 0%, #a1c4fd 100%)' },
+      style: { background: '#fff' },
     },
   ];
   

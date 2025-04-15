@@ -2,24 +2,16 @@ import React, { useState } from 'react';
 import { Table, Button, Input, Select, Tag } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import './tablaPerzonalizada.css';
-import { FiltroTabla } from '../../interfaces/interfaces';
+import { FiltroTabla, PropsTablaPerzonalizada } from '../../interfaces/interfaces';
 
 const { Option } = Select;
-
-interface Props<T> {
-  dataSource: T[];
-  columns: any[];
-  rowKey: string;
-  handleAdd?: () => void;
-  searchFields: string[];
-}
 
 const TablaPersonalizada = <T extends object>({ dataSource, 
     columns, 
     rowKey, 
     handleAdd, 
     searchFields 
-  }: Props<T>) => {
+  }: PropsTablaPerzonalizada<T>) => {
     const [filters, setFilters] = useState<FiltroTabla[]>([]);
     const [currentFilter, setCurrentFilter] = useState<FiltroTabla>({ columna: '', valor: '' });
   

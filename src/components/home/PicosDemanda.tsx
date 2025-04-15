@@ -2,27 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Card, Spin, Select, Row, Col, notification } from 'antd';
 import { getPicosDemanda } from '../../providers/options/dashboard';
 import { Column } from '@ant-design/plots';
+import { CiudadPicosDemanda, PicoDemanda, PicosDemandaProps } from '../../interfaces/interfaces';
 
 const { Option } = Select;
-interface PicosDemandaProps {
-  ciudades: Ciudad[];
-}
-interface Ciudad {
-  nombre: string;
-  codigo: number;
-}
 
-interface PicoDemanda {
-  fecha: string;
-  cod_art: string;
-  nombre_art: string;
-  total_facturas: number;
-  media: string;
-  desv_estandar: number;
-  umbral: number;
-}
 
-const ciudades: Ciudad[] = [
+const ciudades: CiudadPicosDemanda[] = [
   { nombre: 'AMBATO', codigo: 1 },
   { nombre: 'PILLARO', codigo: 10 },
   { nombre: 'PINGUILI', codigo: 11 },
@@ -44,9 +29,9 @@ const ciudades: Ciudad[] = [
 const PicosDemanda: React.FC<PicosDemandaProps> = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [picosData, setPicosData] = useState<PicoDemanda[]>([]);
-  const [año, setAño] = useState<number>(new Date().getFullYear());
+  const [año, setAño] = useState<number>(new Date().getFullYear() - 1); 
   const [ciudad, setCiudad] = useState<number>(1);
-
+  
   useEffect(() => {
     fetchData();
   }, [año, ciudad]);

@@ -1,14 +1,8 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, message } from 'antd';
-import { Usuario } from '../../interfaces/interfaces';
+import { ModalEditarUsuarioProps } from '../../interfaces/interfaces';
 import { actualizarUsuario } from '../../providers/options/usuarios';
 
-interface ModalEditarUsuarioProps {
-  visible: boolean;
-  onClose: () => void;
-  usuario: Usuario;
-  onSave: (usuario: Usuario) => void;
-}
 
 const ModalEditarUsuario: React.FC<ModalEditarUsuarioProps> = ({
   visible,

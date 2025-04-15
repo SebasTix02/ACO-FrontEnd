@@ -1,20 +1,9 @@
 import React from 'react';
 import { Card, Row, Col, Statistic } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { DashboardCardsProps } from '../../interfaces/interfaces';
 
-interface CardData {
-  title: string;
-  icon: React.ReactNode;
-  value: number | string;
-  format?: (value: number) => string;
-  extra?: React.ReactNode;
-  style?: React.CSSProperties;
-  crecimiento?: number;
-}
 
-interface DashboardCardsProps {
-  cards: CardData[];
-}
 
 const DashboardCards: React.FC<DashboardCardsProps> = ({ cards }) => {
   return (
@@ -33,7 +22,7 @@ const DashboardCards: React.FC<DashboardCardsProps> = ({ cards }) => {
               valueStyle={{
                 color:
                   card.crecimiento === undefined
-                    ? '#0B0C5E'
+                    ? '#1F4083'
                     : card.crecimiento > 0
                     ? '#3f8600'
                     : '#cf1322',

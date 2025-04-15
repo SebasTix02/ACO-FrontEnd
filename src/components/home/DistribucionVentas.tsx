@@ -2,27 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Card, Spin, Select, Row, Col, notification, Tooltip,Grid  } from 'antd';
 import { getDistribucionVentas } from '../../providers/options/dashboard';
 import { Pie } from '@ant-design/plots';
-import { Articulo } from '../../interfaces/interfaces';
+import { Articulo, CiudadData, DistribucionVentasProps } from '../../interfaces/interfaces';
 
 const { Option } = Select;
 const { useBreakpoint } = Grid;
 
-interface DistribucionVentasProps {
-  productos: Articulo[];
-}
-
-interface CiudadData {
-  ciudad: {
-    codigo: string;
-    nombre: string;
-    provincia: any;
-  };
-  metricas: {
-    ventas_totales: number;
-    unidades_vendidas: number;
-    transacciones: number;
-  };
-}
 
 const DistribucionVentas: React.FC<DistribucionVentasProps> = ({ productos }) => {
   const screens = useBreakpoint();
@@ -73,14 +57,15 @@ const DistribucionVentas: React.FC<DistribucionVentasProps> = ({ productos }) =>
     radius: 0.8,
     innerRadius: 0.4,
     label: {
-      type: 'spider',
-      content: '{name}',
+      type: 'inner',
+      content: '{percentage}',    
       style: {
-        fontSize: screens.xs ? 12 : 14,
-        fontWeight: 600,
-        fill: '#333',
+        fontSize: screens.xs ? 10 : 12,
+        fontWeight: 400,
+        fill: '#000',
         textAlign: 'center',
-      },
+      }
+    ,
       spider: {
         labelHeight: 28,
         style: {
@@ -95,7 +80,7 @@ const DistribucionVentas: React.FC<DistribucionVentasProps> = ({ productos }) =>
       fields: ['ciudad', 'ventas', 'unidades', 'transacciones'],
       formatter: (data: any) => {
         return {
-          name: data.ciudad, // Dejamos vacío el name para que no muestre título
+          name: data.ciudad,
           value: `
             Ventas: $${(data.ventas || 0).toFixed(2)}
             Unidades: ${(data.unidades || 0).toLocaleString()}

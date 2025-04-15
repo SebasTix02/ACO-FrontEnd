@@ -1,5 +1,6 @@
 import { Modal, Select, Button } from 'antd';
 import { useState } from 'react';
+import { ModalInicioRutaProps } from '../../interfaces/interfaces';
 
 const ubicacionesInicio = [
   {
@@ -11,12 +12,6 @@ const ubicacionesInicio = [
     coordenadas: [-78.633441, -1.360463]
   }
 ];
-
-interface ModalInicioRutaProps {
-  visible: boolean;
-  onCancel: () => void;
-  onConfirm: (ubicacion: any) => void;
-}
 
 export const ModalInicioRuta = ({ visible, onCancel, onConfirm }: ModalInicioRutaProps) => {
   const [selectedUbicacion, setSelectedUbicacion] = useState(null);

@@ -1,13 +1,8 @@
 import React from 'react';
 import { Modal, Form, Input, Select, message } from 'antd';
-import { Usuario } from '../../interfaces/interfaces';
+import { ModalAgregarUsuarioProps, Usuario } from '../../interfaces/interfaces';
 import { crearUsuario } from '../../providers/options/usuarios';
 
-interface ModalAgregarUsuarioProps {
-  visible: boolean;
-  onClose: () => void;
-  onSave: (usuario: Usuario) => void;
-}
 
 const ModalAgregarUsuario: React.FC<ModalAgregarUsuarioProps> = ({ visible, onClose, onSave }) => {
   const [form] = Form.useForm();

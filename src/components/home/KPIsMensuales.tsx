@@ -3,19 +3,10 @@ import { Card, Spin, Select, DatePicker, Row, Col, Statistic, notification, List
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { getKPIsMensuales } from '../../providers/options/dashboard';
 import dayjs from 'dayjs';
+import { KPIsMensualesProps, TopProducto } from '../../interfaces/interfaces';
 
 const { Option } = Select;
 const { Text } = Typography;
-
-interface KPIsMensualesProps {
-  ciudades: Array<{ nombre: string; codigo: number }>;
-}
-
-interface TopProducto {
-  codigo: string;
-  nombre: string;
-  unidades: number;
-}
 
 const KPIsMensuales: React.FC<KPIsMensualesProps> = ({ ciudades }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +18,7 @@ const KPIsMensuales: React.FC<KPIsMensualesProps> = ({ ciudades }) => {
     top_productos?: TopProducto[];
   } | null>(null);
   
-  const [año, setAño] = useState<number>(dayjs().year());
+  const [año, setAño] = useState<number>(dayjs().year()-1);
   const [mes, setMes] = useState<number>(dayjs().month() + 1);
   const [ciudad, setCiudad] = useState<number | undefined>(undefined);
 

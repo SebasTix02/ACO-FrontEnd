@@ -1,14 +1,8 @@
 import React from 'react';
 import { Modal, Typography, message } from 'antd';
-import { Usuario } from '../../interfaces/interfaces';
+import { ModalEliminarUsuarioProps } from '../../interfaces/interfaces';
 import { eliminarUsuario } from '../../providers/options/usuarios';
 
-interface ModalEliminarUsuarioProps {
-  visible: boolean;
-  onClose: () => void;
-  usuario: Usuario;
-  onConfirm: (id: string) => void;
-}
 
 const ModalEliminarUsuario: React.FC<ModalEliminarUsuarioProps> = ({
   visible,

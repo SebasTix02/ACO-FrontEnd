@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space, Input, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Pedido } from '../../interfaces/interfaces';
+import { Pedido, PropsTablaVerPedidos } from '../../interfaces/interfaces';
 import "./tablaVerPedidos.css";
 import ModalEditarPedido from '../modales/modal_editar_pedido';
 
-interface TablaVerPedidosProps {
-  data: Pedido[];
-  onAdd: () => void;
-  onDelete: (record: Pedido) => void;
-  onEdit: (record: Pedido) => void;
-  searchFields?: string[];
-}
 
-const TablaVerPedidos: React.FC<TablaVerPedidosProps> = ({
+const TablaVerPedidos: React.FC<PropsTablaVerPedidos> = ({
   data,
   onAdd,
   onDelete,

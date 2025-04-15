@@ -6,7 +6,7 @@ import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
-import { Articulo, Pedido } from '../../interfaces/interfaces';
+import { Articulo, Pedido, PedidoEdicionModalProps } from '../../interfaces/interfaces';
 import { listarClientes } from '../../providers/options/clientes';
 import { listarArticulos } from '../../providers/options/articulos';
 import { actualizarPedido } from '../../providers/options/pedidos';
@@ -18,13 +18,6 @@ L.Icon.Default.mergeOptions({
   iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
-
-interface PedidoEdicionModalProps {
-  visible: boolean;
-  onClose: () => void;
-  pedido: Pedido;
-  onSave: (updatedOrder: Pedido) => void;
-}
 
 // Componente para editar la posición en el mapa
 const MapEditor: React.FC<{

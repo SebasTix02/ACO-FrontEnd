@@ -3,25 +3,12 @@ import { Card, Spin, Select, DatePicker, Row, Col, notification, Typography, Gri
 import dayjs from 'dayjs';
 import { getPatronesConsumo } from '../../providers/options/dashboard';
 import { Line, LineConfig } from '@ant-design/plots';
-import { Articulo } from '../../interfaces/interfaces';
+import { PatronesConsumoProps, PeriodoData } from '../../interfaces/interfaces';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
 const { useBreakpoint } = Grid;
-
-interface PatronesConsumoProps {
-  productos: Articulo[];
-}
-
-interface PeriodoData {
-  periodo: string;
-  cod_art: string;
-  nombre_art: string;
-  total_ventas: number;
-  total_unidades: string;
-  total_facturas: number;
-}
 
 const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
   const screens = useBreakpoint();
@@ -72,7 +59,7 @@ const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
       setRangoFechas([dates[0], dates[1]]);
     }
   };
-
+  
   const config: LineConfig = {
     data: patronesData,
     xField: 'periodo',
@@ -106,13 +93,13 @@ const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
     },
     tooltip: {
       showTitle: true,
+      shared: false, // Esto desactiva el tooltip compartido
       fields: ['nombre_art', 'total_ventas', 'total_unidades', 'total_facturas'],
       formatter: (datum: any) => {
         const safeDatum = datum as PeriodoData;
         const ventas = Number(safeDatum?.total_ventas || 0);
         const unidades = Number(safeDatum?.total_unidades?.replace(/[^0-9.]/g, '') || 0);
         const transacciones = Number(safeDatum?.total_facturas || 0);
-
         return {
           name: safeDatum?.nombre_art || 'Producto no especificado',
           value: `
@@ -121,7 +108,6 @@ const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
               maximumFractionDigits: 2
             })}
             Unidades: ${unidades.toLocaleString('es-ES')}
-            Transacciones: ${transacciones.toLocaleString('es-ES')}
           `
         };
       },
@@ -168,7 +154,7 @@ const PatronesConsumo: React.FC<PatronesConsumoProps> = ({ productos }) => {
           </Select>
         </Col>
         
-        <Col xs={24} md={8}>
+        <Col xs={24} md={11}>
           <RangePicker
             style={{ width: '100%' }}
             value={rangoFechas}
